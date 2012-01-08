@@ -41,8 +41,6 @@ while (true) {
         var_dump($resultPercentage, $resultCustomerName);
     } else if ($result === null) { // When there is not result row of the remainder
         break;
-    } else if ($result === false) { // In case of error
-        fn_trigger_error($mySqlIStatement->error);
     } else {
         assert(false);
     }
