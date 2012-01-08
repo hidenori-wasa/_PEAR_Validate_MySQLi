@@ -1,0 +1,16 @@
+The basic concept
+    This package can make error handling and verification of MySQLi without writing a code by including this package.
+
+The features list
+    This package has wrapper class of MySQLi, MySQLi_STMT and MySQLi_Result class for error handling and verification.
+    This becomes fast because verification code disappears on release.
+
+The dependences
+    BreakpointDebugging package
+    Windows, but I want to support "Linux" in future.
+    PHP >= 5.3.0
+    MySQL >= 5.1
+
+Notice
+    I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
+        Method name "<class name>::<method name>" is not in camel caps format
