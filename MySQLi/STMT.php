@@ -68,27 +68,27 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
     /**
      * @var string Native class name ( This fixes the variable name ). This is using a delay lexical binding for purpose that class objects becomes separate names in basic class.
      */
-	protected static $pr_nativeClassName = '\MySQLi_STMT';
+    protected static $pr_nativeClassName = '\MySQLi_STMT';
     
     /**
      * @var int The change pointer to "MySQLi" class object. (ID)
      */
-	private $_pr_pMySqlI;
+    private $_pr_pMySqlI;
     
     /**
      * @var bool Did this close?
      */
-	protected $pr_isClose = false;
-	
+    protected $pr_isClose = false;
+    
     /**
      * This throws "MySQLi_Error_Exception".
      * 
      * @return void
      */
     private function _throwErrorException()
-	{
+    {
         throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
-	}
+    }
     
     /**
      * If there is a "MySQLi_STMT" query warning, it throw "MySQLi_Query_Warning_Exception".
@@ -98,14 +98,14 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
     private function _checkWarning()
     {
         $warnings = $this->pr_pNativeClass->get_warnings();
-        if ($warnings != false) {
+        if ($warnings !== false) {
             if ($result = $this->_pr_pMySqlI->query('SHOW WARNINGS')) {
                 $warnings = $result->fetch_all(MYSQLI_ASSOC);
                 $result->close();
                 foreach ($warnings as $warning) {
-                    if ($warning['Level'] == 'Note') {
+                    if ($warning['Level'] === 'Note') {
                         continue;
-                    } else if ($warning['Level'] == 'Warning') {
+                    } else if ($warning['Level'] === 'Warning') {
                         throw new MySQLi_Query_Warning_Exception(B::convertMbString($warning['Message']), $warning['Code']);
                     } else {
                         assert(false);
@@ -122,23 +122,23 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
      * @param object $pMySqlI      "\Validate\MySQLi" class
      */
     function __construct($pNativeClass, $pMySqlI)
-	{
+    {
         // This will be able to override without inheriting to a native class.
-		parent::__construct($pNativeClass);
-		$this->_pr_pMySqlI = $pMySqlI;
-	}
-	
+        parent::__construct($pNativeClass);
+        $this->_pr_pMySqlI = $pMySqlI;
+    }
+    
     /**
      * Destructor for close
      */
     function __destruct()
-	{
+    {
         // In case of not closing
         if (!$this->pr_isClose) {
-			$this->close();
-		}
-	}
-	
+            $this->close();
+        }
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::bind_param()" for a variable length reference parameter
      * The warning: Signature is different because this is a variable length reference parameter.
@@ -148,23 +148,23 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
      * @return void
      */
     function bind_param($refParams)
-	{
-		return call_user_func_array(array($this->pr_pNativeClass, 'bind_param'), $refParams);
-	}
-	
+    {
+        return call_user_func_array(array($this->pr_pNativeClass, 'bind_param'), $refParams);
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::execute()" for error handling
      * 
      * @return void
      */
     function execute()
-	{
+    {
         if (!$this->pr_pNativeClass->execute()) {
             $this->_throwErrorException();
-		}
-		$this->_checkWarning();
-	}
-	
+        }
+        $this->_checkWarning();
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::bind_result()" for a variable length reference parameter
      * The warning: Signature is different because this is a variable length reference parameter.
@@ -174,48 +174,48 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
      * @return Same
      */
     function bind_result($refParams)
-	{
-		return call_user_func_array(array($this->pr_pNativeClass, 'bind_result'), $refParams);
-	}
-	
+    {
+        return call_user_func_array(array($this->pr_pNativeClass, 'bind_result'), $refParams);
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::fetch()" for error handling
      * 
      * @return Same
      */
     function fetch()
-	{
-		$row = $this->pr_pNativeClass->fetch();
+    {
+        $row = $this->pr_pNativeClass->fetch();
         if ($row === false) {
-			$this->_throwErrorException();
-		}
-		return $row;
-	}
-	
+            $this->_throwErrorException();
+        }
+        return $row;
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::close()" for verification
      * 
      * @return Same
      */
     function close()
-	{
+    {
         // This closed.
-		$this->pr_isClose = true;
-		return $this->pr_pNativeClass->close();
-	}
-	
+        $this->pr_isClose = true;
+        return $this->pr_pNativeClass->close();
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::store_result()" for error handling
      * 
      * @return void
      */
     function store_result()
-	{
+    {
         if (!$this->pr_pNativeClass->store_result()) {
-			$this->_throwErrorException();
-		}
-	}
-	
+            $this->_throwErrorException();
+        }
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::send_long_data()" for error handling
      * 
@@ -225,50 +225,50 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
      * @return void
      */
     function send_long_data($paramNumber, $sendData)
-	{
-		static $maxAllowedPacket = null;
-		
+    {
+        static $maxAllowedPacket = null;
+        
         if ($maxAllowedPacket === null) {
             // This acquires "max_allowed_packet" ( maximum packet size ) of MySQL system variable.
-			$result = $this->_pr_pMySqlI->query('SHOW VARIABLES LIKE \'max_allowed_packet\'');
-			$resultArray = $result->fetch_row();
-			$maxAllowedPacket = (int)$resultArray[1];
-			$result->close();
-		}
+            $result = $this->_pr_pMySqlI->query('SHOW VARIABLES LIKE \'max_allowed_packet\'');
+            $resultArray = $result->fetch_row();
+            $maxAllowedPacket = (int)$resultArray[1];
+            $result->close();
+        }
         if (strlen($sendData) > $maxAllowedPacket) {
-			$this->_throwErrorException();
-		}
+            $this->_throwErrorException();
+        }
         if (!$this->pr_pNativeClass->send_long_data($paramNumber, $sendData)) {
-			$this->_throwErrorException();
-		}
-	}
-	
+            $this->_throwErrorException();
+        }
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::result_metadata()" for error handling
      * 
      * @return \Validate\MySQLi_Result
      */
     function result_metadata()
-	{
+    {
         // The change pointer to "\mysqli_result" class object. (=ID). It isn't possible to return a derivation class.
-		$pMysqliResult = $this->pr_pNativeClass->result_metadata();
+        $pMysqliResult = $this->pr_pNativeClass->result_metadata();
         if (!$pMysqliResult) {
             throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
         }
-		return new MySQLi_Result($pMysqliResult, $this->_pr_pMySqlI);
-	}
-	
+        return new MySQLi_Result($pMysqliResult, $this->_pr_pMySqlI);
+    }
+    
     /**
      * Rapper method of "MySQLi_STMT::reset()" for error handling
      * 
      * @return void
      */
     function reset()
-	{
+    {
         if (!$this->pr_pNativeClass->reset()) {
-			$this->_throwErrorException();
-		}
-	}
+            $this->_throwErrorException();
+        }
+    }
 }
 
 if ($_BreakpointDebugging_EXE_MODE & B::RELEASE) { // In case of release.
@@ -287,7 +287,7 @@ if ($_BreakpointDebugging_EXE_MODE & B::RELEASE) { // In case of release.
     {
     }
 } else { // In case of not release.
-	include_once __DIR__ . '/STMT_Option.php';
+    include_once __DIR__ . '/STMT_Option.php';
 }
 
 ?>

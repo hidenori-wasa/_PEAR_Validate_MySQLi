@@ -94,18 +94,18 @@ class MySQLi extends MySQLi_InAllCase
     private function _isHost($hostName)
     {
         // In case of IPv4 or IPv6
-        if (filter_var($hostName, FILTER_VALIDATE_IP) != false) {
+        if (filter_var($hostName, FILTER_VALIDATE_IP) !== false) {
             return true;
         }
         // In case of 'localhost'
-        if (strncasecmp($hostName, 'localhost', strlen('localhost')) == 0) {
+        if (strncasecmp($hostName, 'localhost', strlen('localhost')) === 0) {
             return true;
         }
         // In case of the host name
         $topEnd = '[a-z0-9]';
         $domain = $topEnd . '([a-z0-9\-]{0,61}' . $topEnd . ')?';
         $pattern = '`^' . $domain . '\.' . $domain . '(\.' . $domain . ')* $`xXi'; // Regular expression of the host name
-        if (preg_match($pattern, $hostName) == 1) {
+        if (preg_match($pattern, $hostName) === 1) {
             return true;
         }
         return false;
@@ -121,7 +121,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function character_set_name()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->character_set_name();
     }
@@ -142,7 +142,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function get_charset()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->get_charset();
     }
@@ -154,7 +154,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function get_client_info()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->get_client_info();
     }
@@ -166,10 +166,10 @@ class MySQLi extends MySQLi_InAllCase
      */
     function get_connection_stats()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         $result = $this->pr_pNativeClass->get_connection_stats();
-        assert($result != null);
+        assert($result !== null);
         return $result;
     }
     
@@ -189,7 +189,7 @@ class MySQLi extends MySQLi_InAllCase
         switch (func_num_args()) {
         case 2:
             assert(is_int($resultMode));
-            assert($resultMode == MYSQLI_STORE_RESULT || $resultMode == MYSQLI_ASYNC || $resultMode == MYSQLI_USE_RESULT);
+            assert($resultMode === MYSQLI_STORE_RESULT || $resultMode === MYSQLI_ASYNC || $resultMode === MYSQLI_USE_RESULT);
         case 1:
             assert(is_string($query));
             break;
@@ -207,7 +207,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function close()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         // This should not be closed.
         assert(!$this->pr_isClose);
         
@@ -225,7 +225,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function change_user($user, $password, $database)
     {
-        assert(func_num_args() == 3);
+        assert(func_num_args() === 3);
         assert(is_string($user));
         assert(is_string($password));
         assert(is_string($database));
@@ -243,9 +243,9 @@ class MySQLi extends MySQLi_InAllCase
      */
     function options($option, $value)
     {
-        assert(func_num_args() == 2);
+        assert(func_num_args() === 2);
         assert(is_int($option));
-        assert($option == MYSQLI_OPT_CONNECT_TIMEOUT || $option == MYSQLI_OPT_LOCAL_INFILE || $option == MYSQLI_INIT_COMMAND || $option == MYSQLI_READ_DEFAULT_FILE || $option == MYSQLI_READ_DEFAULT_GROUP);
+        assert($option === MYSQLI_OPT_CONNECT_TIMEOUT || $option === MYSQLI_OPT_LOCAL_INFILE || $option === MYSQLI_INIT_COMMAND || $option === MYSQLI_READ_DEFAULT_FILE || $option === MYSQLI_READ_DEFAULT_GROUP);
         assert(is_scalar($value));
         
         $return = $this->pr_pNativeClass->options($option, $value);
@@ -284,7 +284,7 @@ class MySQLi extends MySQLi_InAllCase
             assert(is_string($userName));
         case 1:
             // When the prefix is "p:"
-            if (strncasecmp($hostNameOrIP, 'p:', strlen('p:')) == 0) {
+            if (strncasecmp($hostNameOrIP, 'p:', strlen('p:')) === 0) {
                 // This deletes a prefix.
                 $hostNameOrIP = substr($hostNameOrIP, strlen('p:'), strlen($hostNameOrIP) - strlen('p:'));
             }
@@ -307,7 +307,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function set_charset($charset)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_string($charset));
         
         $return = $this->pr_pNativeClass->set_charset($charset);
@@ -323,7 +323,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function kill($processid)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_int($processid));
         
         parent::kill($processid);
@@ -345,7 +345,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function ping()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         parent::ping();
     }
@@ -388,7 +388,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function real_escape_string($escapeString)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_string($escapeString));
         
         return $this->pr_pNativeClass->real_escape_string($escapeString);
@@ -404,7 +404,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function reap_async_query()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return parent::reapAsyncQuery();
     }
@@ -418,7 +418,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function prepare($query)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_string($query));
         
         return parent::prepare($query);
@@ -436,7 +436,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function select_db($database)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_string($database));
         
         parent::select_db($database);
@@ -459,8 +459,8 @@ class MySQLi extends MySQLi_InAllCase
     function stat()
     {
         $return = $this->pr_pNativeClass->stat();
-        assert(func_num_args() == 0);
-        assert($return != false);
+        assert(func_num_args() === 0);
+        assert($return !== false);
         return $return;
     }
     
@@ -472,7 +472,7 @@ class MySQLi extends MySQLi_InAllCase
     function stmt_init()
     {
         assert(false); // This isn't used. Because, it is possible to substitute in MySQLi::prepare().
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return parent::stmt_init();
     }
@@ -485,7 +485,7 @@ class MySQLi extends MySQLi_InAllCase
     function store_result()
     {
         assert(false); // This isn't used. Because, it is possible to substitute in MySQLi::query().
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return parent::store_result();
     }
@@ -497,7 +497,7 @@ class MySQLi extends MySQLi_InAllCase
      */
     function thread_safe()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->thread_safe();
     }
@@ -510,7 +510,7 @@ class MySQLi extends MySQLi_InAllCase
     function use_result()
     {
         assert(false); // This isn't used. Because, it is possible to substitute in MySQLi::query().
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return parent::use_result();
     }

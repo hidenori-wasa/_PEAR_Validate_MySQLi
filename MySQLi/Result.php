@@ -43,7 +43,6 @@
 
 namespace Validate;
 
-//require_once 'MySQLi.php'; // This set php.ini of MySQLi.
 require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
 
 global $_BreakpointDebugging_EXE_MODE;

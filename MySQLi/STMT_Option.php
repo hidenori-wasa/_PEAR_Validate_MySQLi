@@ -74,7 +74,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function __construct($pNativeClass, $pMySqlI)
     {
-        assert(func_num_args() == 2);
+        assert(func_num_args() === 2);
         assert($pNativeClass instanceof \MySQLi_STMT);
         assert($pMySqlI instanceof MySQLi);
         
@@ -93,7 +93,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function bind_param($refParams)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_array($refParams));
         
         $return = parent::bind_param($refParams);
@@ -107,7 +107,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function execute()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         assert(!$this->_pr_isExistResultRows);
         
         parent::execute();
@@ -130,7 +130,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function bind_result($refParams)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_array($refParams));
         
         $return = parent::bind_result($refParams);
@@ -144,7 +144,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function fetch()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         assert($this->_pr_isExistResultRows);
         
         return parent::fetch();
@@ -157,7 +157,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function close()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         // This must not close.
         assert(!$this->pr_isClose);
         // The result-rows doesn't exist.
@@ -174,7 +174,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function store_result()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         assert(!$this->_pr_isBuffering);
         $this->_pr_isBuffering = true;
         
@@ -188,7 +188,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function free_result()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         assert($this->_pr_isBuffering);
         $this->_pr_isBuffering = false;
         
@@ -205,7 +205,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function send_long_data($paramNumber, $sendData)
     {
-        assert(func_num_args() == 2);
+        assert(func_num_args() === 2);
         assert(is_int($paramNumber));
         assert(0 <= $paramNumber && $paramNumber < $this->pr_pNativeClass->param_count);
         assert(is_string($sendData));
@@ -223,7 +223,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
     function prepare($query)
     {
         assert(false); // This isn't used. Because, it is possible to substitute in MySQLi::prepare().
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_string($query));
         
         $return = $this->pr_pNativeClass->prepare($query);
@@ -237,7 +237,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function result_metadata()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return parent::result_metadata();
     }
@@ -249,7 +249,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function reset()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         assert($this->_pr_isExistResultRows);
         // The result-rows doesn't exist.
         $this->_pr_isExistResultRows = false;
@@ -266,7 +266,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function data_seek($rowNumber)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(0 <= $rowNumber && $rowNumber < $this->pr_pNativeClass->num_rows);
         
         $this->pr_pNativeClass->data_seek($rowNumber);
@@ -281,7 +281,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function attr_get($attr)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_int($attr));
         
         $attrValue = $this->pr_pNativeClass->attr_get($attr);
@@ -299,7 +299,7 @@ class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
      */
     function attr_set($attr, $mode)
     {
-        assert(func_num_args() == 2);
+        assert(func_num_args() === 2);
         assert(is_int($attr));
         assert(is_int($mode));
         

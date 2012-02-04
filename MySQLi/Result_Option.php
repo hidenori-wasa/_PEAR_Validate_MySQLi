@@ -64,7 +64,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function __construct($pNativeClass, $pMySqlI)
     {
-        assert(func_num_args() == 2);
+        assert(func_num_args() === 2);
         assert($pNativeClass instanceof \MySQLi_Result);
         assert($pMySqlI instanceof MySQLi);
         
@@ -78,7 +78,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function close()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         // This must not be closed.
         assert(!$this->pr_isClose);
         
@@ -94,7 +94,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function data_seek($offset)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_int($offset));
         assert(0 <= $offset && $offset < $this->pr_pNativeClass->num_rows);
         
@@ -152,7 +152,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function fetch_assoc()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->fetch_assoc();
     }
@@ -164,7 +164,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function fetch_row()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->fetch_row();
     }
@@ -176,7 +176,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function fetch_field()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         
         return $this->pr_pNativeClass->fetch_field();
     }
@@ -190,7 +190,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function fetch_field_direct($fieldNumber)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_int($fieldNumber));
         assert(0 <= $fieldNumber && $fieldNumber < $this->pr_pNativeClass->field_count);
         
@@ -204,7 +204,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function fetch_fields()
     {
-        assert(func_num_args() == 0);
+        assert(func_num_args() === 0);
         assert($this->pr_pNativeClass->field_count > 0);
         
         return parent::fetch_fields();
@@ -241,7 +241,7 @@ class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
      */
     function field_seek($fieldNumber)
     {
-        assert(func_num_args() == 1);
+        assert(func_num_args() === 1);
         assert(is_int($fieldNumber));
         assert(0 <= $fieldNumber && $fieldNumber < $this->pr_pNativeClass->field_count);
         

@@ -5,6 +5,46 @@ The features list
     This package has wrapper class of MySQLi, MySQLi_STMT and MySQLi_Result class for error handling and verification.
     This becomes fast because verification code disappears on release.
 
+    ### The execution procedure. ###
+    Procedure 1: Please, set php file format to utf8, but we should create backup of php files because multibyte strings may be destroyed.
+    Procedure 2: Please, copy *_MySetting*.php as your project php file.
+    Procedure 3: Please, edit *_MySetting*.php for customize.
+        Then, it is possible to make specific setting about all debugging modes.
+    Procedure 4: Please, copy following in your project php file.
+        "require_once './BreakpointDebugging_MySetting.php';"
+    Procedure 5: Please, rewrite following in your project php file.
+        from "new \MySQLi" to "new \Validate\MySQLi"
+    Procedure 6: Please, copy following in your project "my.ini" or "my.cnf" file.
+        [mysqld]
+        # It sets character sets of server, data base, table, column to "utf8". It sets collating sequence to the default "utf8_general_ci".
+        character_set_server=utf8
+        # It ignores character sets information which was sent from client and it uses character sets of default of server.
+        skip-character-set-client-handshake
+        # It writes database name, a table name, a table alias name in storage with lowercase. Therefore, it works in all OS.
+        lower_case_table_names=1
+        # "init_connect" is SQL statement to execute when connecting.
+        # "SET NAMES 'utf8'" sets
+        #       character_set_client (Character sets which client sends)
+        #       character_set_connection (Character sets of literal character string)
+        #       character_set_results (Character sets of query-result to return to client) to "utf8".
+        #       And it sets collation_connection (Collating sequence of connection character sets) to the default collating sequence of "utf8"( utf8_general_ci).
+        init_connect="SET NAMES 'utf8'"
+        [mysqldump]
+        default-character-set=utf8
+        [mysql]
+        default-character-set=utf8
+
+    ### Exception hierarchical structure ###
+    PEAR_Exception
+        BreakpointDebugging_Exception
+            \Validate\MySQLi_Exception
+                \Validate\MySQLi_Query_Exception
+                    \Validate\MySQLi_Query_Warning_Exception
+                    \Validate\MySQLi_Query_Error_Exception
+                \Validate\MySQLi_Connect_Exception
+                \Validate\MySQLi_Warning_Exception
+                \Validate\MySQLi_Error_Exception
+
 The dependences
     BreakpointDebugging package
     Windows, but I want to support "Linux" in future.

@@ -8,7 +8,8 @@ require_once './ExampleDb.php';
 $mySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass', 'example_db');
 // Creates prepared statement ( the SQL sentence which was prepared for the parameter embedding ).
 $mySqlIStatement = $mySqlI->prepare('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) OR ( CustomerName LIKE ?)');
-// User input value ( DOS attack )
+// User input value ( DOS attack ). This quoted from MySQL manual.
+// "\MySQLi_STMT" makes a invalid DOS attack by ignoring since then white space of SQL statement.
 $inputPercentage = '50 OR 1=1';
 $inputCustomerName = '_ASA OR 1=1';
 // Escapes ( SQL scripting attack measure ) the MySQL special character of user input value, and set value to the bound variables.

@@ -6,6 +6,45 @@
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
  *       Method name "<class name>::<method name>" is not in camel caps format
  * 
+ * ### The execution procedure. ###
+ * Procedure 1: Please, set php file format to utf8, but we should create backup of php files because multibyte strings may be destroyed.
+ * Procedure 2: Please, copy *_MySetting*.php as your project php file.
+ * Procedure 3: Please, edit *_MySetting*.php for customize.
+ *      Then, it is possible to make specific setting about all debugging modes.
+ * Procedure 4: Please, copy following in your project php file.
+ *      "require_once './BreakpointDebugging_MySetting.php';"
+ * Procedure 5: Please, rewrite following in your project php file.
+ *      from "new \MySQLi" to "new \Validate\MySQLi"
+ * Procedure 6: Please, copy following in your project "my.ini" or "my.cnf" file.
+ *      [mysqld]
+ *      # It sets character sets of server, data base, table, column to "utf8". It sets collating sequence to the default "utf8_general_ci".
+ *      character_set_server=utf8
+ *      # It ignores character sets information which was sent from client and it uses character sets of default of server.
+ *      skip-character-set-client-handshake
+ *      # It writes database name, a table name, a table alias name in storage with lowercase. Therefore, it works in all OS.
+ *      lower_case_table_names=1
+ *      # "init_connect" is SQL statement to execute when connecting.
+ *      # "SET NAMES 'utf8'" sets
+ *      #       character_set_client (Character sets which client sends)
+ *      #       character_set_connection (Character sets of literal character string)
+ *      #       character_set_results (Character sets of query-result to return to client) to "utf8".
+ *      #       And it sets collation_connection (Collating sequence of connection character sets) to the default collating sequence of "utf8"( utf8_general_ci).
+ *      init_connect="SET NAMES 'utf8'"
+ *      [mysqldump]
+ *      default-character-set=utf8
+ *      [mysql]
+ *      default-character-set=utf8
+ * 
+ *  ### Exception hierarchical structure ###
+ *  PEAR_Exception
+ *      BreakpointDebugging_Exception
+ *          \Validate\MySQLi_Exception
+ *              \Validate\MySQLi_Query_Exception
+ *                  \Validate\MySQLi_Query_Warning_Exception
+ *                  \Validate\MySQLi_Query_Error_Exception
+ *              \Validate\MySQLi_Connect_Exception
+ *              \Validate\MySQLi_Error_Exception
+ * 
  * PHP version 5.3
  * 
  * LICENSE:
@@ -52,17 +91,18 @@ require_once __DIR__ . '/MySQLi/OverrideClass.php';
 
 global $_BreakpointDebugging_EXE_MODE;
 
-B::iniCheck('mysqli.max_persistent', '-1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.max_persistent = -1".');
-B::iniCheck('mysqli.allow_local_infile', '1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.allow_local_infile = On".');
-B::iniCheck('mysqli.allow_persistent', '1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.allow_persistent = On".');
-B::iniCheck('mysqli.max_links', '-1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.max_links = -1".');
-// "mysqli.cache_size" follows it because it is server setting.
-// "mysqli.default_port" follows setting of server so as not to catch on fire wall.
-// "mysqli.default_socket" follows it because it is server setting.
-// "mysqli.default_host" follows it because it is server setting.
-// "mysqli.default_user" follows it because it is server setting.
-B::iniSet('mysqli.default_pw', ''); // This doesn't use because "mysqli.default_pw" is stolen.
-B::iniCheck('mysqli.reconnect', '', 'This is different from the default. This is recommended to set "mysqli.reconnect = Off" inside of "php.ini" file.');
+//B::iniCheck('mysqli.max_persistent', '-1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.max_persistent = -1".');
+//B::iniCheck('mysqli.allow_local_infile', '1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.allow_local_infile = On".');
+//B::iniCheck('mysqli.allow_persistent', '1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.allow_persistent = On".');
+//B::iniCheck('mysqli.max_links', '-1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.max_links = -1".');
+//// "mysqli.cache_size" follows it because it is server setting.
+//// "mysqli.default_port" follows setting of server so as not to catch on fire wall.
+//// "mysqli.default_socket" follows it because it is server setting.
+//// "mysqli.default_host" follows it because it is server setting.
+//// "mysqli.default_user" follows it because it is server setting.
+//B::iniSet('mysqli.default_pw', ''); // This doesn't use because "mysqli.default_pw" is stolen.
+//B::iniCheck('mysqli.reconnect', '', 'This is different from the default. This is recommended to set "mysqli.reconnect = Off" inside of "php.ini" file.');
+require_once './Validate_MySQLi_MySetting.php';
 
 /**
  * This class is own package exception.
@@ -134,19 +174,19 @@ class MySQLi_Connect_Exception extends MySQLi_Exception
 {
 }
 
-/**
- * This class is own package warning exception.
- * 
- * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
- * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
- * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
- */
-class MySQLi_Warning_Exception extends MySQLi_Exception
-{
-}
+///**
+// * This class is own package warning exception.
+// * 
+// * @category PHP
+// * @package  Validate_MySQLi
+// * @author   Hidenori Wasa <wasa_@nifty.com>
+// * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
+// * @version  Release: @package_version@
+// * @link     http://pear.php.net/package/Validate/MySQLi
+// */
+//class MySQLi_Warning_Exception extends MySQLi_Exception
+//{
+//}
 
 /**
  * This class is own package error exception.
@@ -217,9 +257,9 @@ class MySQLi_InAllCase extends \Validate_MySQLi_OverrideClass
                 $warnings = $pResult->fetch_all(MYSQLI_ASSOC);
                 $pResult->close();
                 foreach ($warnings as $warning) {
-                    if ($warning['Level'] == 'Note') {
+                    if ($warning['Level'] === 'Note') {
                         continue;
-                    } else if ($warning['Level'] == 'Warning') {
+                    } else if ($warning['Level'] === 'Warning') {
                         throw new MySQLi_Query_Warning_Exception(B::convertMbString($warning['Message']), $warning['Code']);
                     } else {
                         assert(false);

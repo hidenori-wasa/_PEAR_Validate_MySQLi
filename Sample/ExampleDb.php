@@ -5,7 +5,6 @@
 namespace Your_Name;
 
 require_once './BreakpointDebugging_MySetting.php';
-require_once 'Validate/MySQLi.php';
 
 // Create MySQL class object.
 $mySqlI = new \Validate\MySQLi();
