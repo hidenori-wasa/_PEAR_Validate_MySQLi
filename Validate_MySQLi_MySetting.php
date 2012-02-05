@@ -3,7 +3,7 @@
 /**
  * This is file for various setting.
  * 
- * As for procedure, please, refer to the file level document block of BreakpointDebugging.php.
+ * As for procedure, please, refer to the file level document block of Validate/MySQLi.php.
  * 
  * PHP version 5.3
  * 

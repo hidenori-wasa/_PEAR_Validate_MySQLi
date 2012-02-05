@@ -106,7 +106,8 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
                     if ($warning['Level'] === 'Note') {
                         continue;
                     } else if ($warning['Level'] === 'Warning') {
-                        throw new MySQLi_Query_Warning_Exception(B::convertMbString($warning['Message']), $warning['Code']);
+                        //throw new MySQLi_Query_Warning_Exception(B::convertMbString($warning['Message']), $warning['Code']);
+                        MySQLi::throwException('\Validate\MySQLi_Query_Warning_Exception', $warning['Message'], (int)$warning['Code']);
                     } else {
                         assert(false);
                     }
@@ -253,7 +254,8 @@ class MySQLi_STMT_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
         // The change pointer to "\mysqli_result" class object. (=ID). It isn't possible to return a derivation class.
         $pMysqliResult = $this->pr_pNativeClass->result_metadata();
         if (!$pMysqliResult) {
-            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            //throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            MySQLi::throwException('\Validate\MySQLi_Query_Error_Exception', $this->pr_pNativeClass->error, $this->pr_pNativeClass->errno);
         }
         return new MySQLi_Result($pMysqliResult, $this->_pr_pMySqlI);
     }

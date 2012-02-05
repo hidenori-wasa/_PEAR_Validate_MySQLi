@@ -225,6 +225,28 @@ class MySQLi_InAllCase extends \Validate_MySQLi_OverrideClass
     protected $pr_isClose = false;
     
     /**
+     * Throw exception.
+     * 
+     * @param string    $exception An exception which you want to throw
+     * @param string    $message   Exception message
+     * @param int       $code      Exception number
+     * @param Exception $previous  Previous exception
+     * 
+     * @return void 
+     * 
+     * @example MySQLi::throwException('\Validate\Exception', $warning['Message']);
+     */
+    static function throwException($exception, $message = '' , $code = 0 , $previous = null)
+    {
+        assert(is_string($exception));
+        assert(is_string($message));
+        assert(is_int($code));
+        assert($previous instanceof Exception || $previous === null);
+        
+        throw new $exception(B::convertMbString($message), $code, $previous);
+    }
+    
+    /**
      * This throws "MySQLi_Query_Error_Exception".
      * 
      * @return void
@@ -260,7 +282,8 @@ class MySQLi_InAllCase extends \Validate_MySQLi_OverrideClass
                     if ($warning['Level'] === 'Note') {
                         continue;
                     } else if ($warning['Level'] === 'Warning') {
-                        throw new MySQLi_Query_Warning_Exception(B::convertMbString($warning['Message']), $warning['Code']);
+                        //throw new MySQLi_Query_Warning_Exception(B::convertMbString($warning['Message']), $warning['Code']);
+                        MySQLi::throwException('\Validate\MySQLi_Query_Warning_Exception', $warning['Message'], (int)$warning['Code']);
                     } else {
                         assert(false);
                     }
@@ -278,7 +301,8 @@ class MySQLi_InAllCase extends \Validate_MySQLi_OverrideClass
         $pNativeClass = self::newArray(self::$pr_nativeClassName, func_get_args());
         // Connection check
         if ($pNativeClass->connect_errno) {
-            throw new MySQLi_Connect_Exception(B::convertMbString($pNativeClass->connect_error), $pNativeClass->connect_errno);
+            //throw new MySQLi_Connect_Exception(B::convertMbString($pNativeClass->connect_error), $pNativeClass->connect_errno);
+            MySQLi::throwException('\Validate\MySQLi_Connect_Exception', $pNativeClass->connect_error, $pNativeClass->connect_errno);
         }
         // This becomes overriding without inheritance of native class ( extension module class ).
         parent::__construct($pNativeClass);
@@ -356,7 +380,8 @@ class MySQLi_InAllCase extends \Validate_MySQLi_OverrideClass
         call_user_func_array(array($this->pr_pNativeClass, 'real_connect'), func_get_args());
         // Connection check
         if ($this->pr_pNativeClass->connect_errno) {
-            throw new MySQLi_Connect_Exception(B::convertMbString($this->pr_pNativeClass->connect_error), $this->pr_pNativeClass->connect_errno);
+            //throw new MySQLi_Connect_Exception(B::convertMbString($this->pr_pNativeClass->connect_error), $this->pr_pNativeClass->connect_errno);
+            MySQLi::throwException('\Validate\MySQLi_Connect_Exception', $this->pr_pNativeClass->connect_error, $this->pr_pNativeClass->connect_errno);
         }
     }
     
