@@ -3,13 +3,13 @@ Please, set the following files into this directory.
     ./BreakpointDebugging_MySetting_Option.php
     ./PEAR/BreakpointDebugging.php
     ./PEAR/BreakpointDebugging_Option.php
+    ./PEAR/BreakpointDebugging/OverrideClass.php
     ./PEAR/BreakpointDebugging/Error.php
     ./PEAR/PEAR/Exception.php
     ./Validate_MySQLi_MySetting.php
     ./Validate_MySQLi_MySetting_Option.php
     ./PEAR/Validate/MySQLi.php
     ./PEAR/Validate/MySQLi_Option.php
-    ./PEAR/Validate/MySQLi/OverrideClass.php
     ./PEAR/Validate/MySQLi/Result.php
     ./PEAR/Validate/MySQLi/Result_Option.php
     ./PEAR/Validate/MySQLi/STMT.php

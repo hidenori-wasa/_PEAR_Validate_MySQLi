@@ -57,7 +57,7 @@ global $_BreakpointDebugging_EXE_MODE;
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/Validate/MySQLi
  */
-class MySQLi_Result_For_Debug_And_Release extends \Validate_MySQLi_OverrideClass
+class MySQLi_Result_For_Debug_And_Release extends \BreakpointDebugging_OverrideClass
 {
     /**
      * @var string Native class name ( This fixes the variable name ). This is using a delay lexical binding for purpose that class objects becomes separate names in basic class.

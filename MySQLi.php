@@ -6,6 +6,10 @@
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
  *       Method name "<class name>::<method name>" is not in camel caps format
  * 
+ * ### The advantage of this package. ###
+ * This package can do error handling and verification by using wrapper class of MySQLi, MySQLi_STMT and MySQLi_Result class.
+ * Also, this package accelerates because verification code disappears on release.
+ * 
  * ### The execution procedure. ###
  * Procedure 1: Please, set php file format to utf8, but we should create backup of php files because multibyte strings may be destroyed.
  * Procedure 2: Please, copy *_MySetting*.php as your project php file.
@@ -87,7 +91,8 @@ namespace Validate;
 // therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
-require_once __DIR__ . '/MySQLi/OverrideClass.php';
+//require_once __DIR__ . '/MySQLi/OverrideClass.php';
+require_once __DIR__ . '/../BreakpointDebugging/OverrideClass.php';
 
 global $_BreakpointDebugging_EXE_MODE;
 
@@ -212,7 +217,7 @@ class MySQLi_Error_Exception extends MySQLi_Exception
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/Validate/MySQLi
  */
-class MySQLi_InAllCase extends \Validate_MySQLi_OverrideClass
+class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 {
     /**
      * @var string Native class name( Variable name is fixed ).
