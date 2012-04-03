@@ -57,7 +57,7 @@ global $_BreakpointDebugging_EXE_MODE;
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/Validate/MySQLi
  */
-class MySQLi_Result_For_Debug_And_Release extends \BreakpointDebugging_OverrideClass
+class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
 {
     /**
      * @var string Native class name ( This fixes the variable name ). This is using a delay lexical binding for purpose that class objects becomes separate names in basic class.
@@ -201,7 +201,7 @@ if ($_BreakpointDebugging_EXE_MODE & \BreakpointDebugging::RELEASE) { // In case
      * @version  Release: @package_version@
      * @link     http://pear.php.net/package/Validate/MySQLi
      */
-    class MySQLi_Result extends MySQLi_Result_For_Debug_And_Release
+    class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
     }
 } else { // In case of not release.

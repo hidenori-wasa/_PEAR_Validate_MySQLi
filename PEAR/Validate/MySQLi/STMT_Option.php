@@ -54,7 +54,7 @@ namespace Validate;
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/Validate/MySQLi
  */
-class MySQLi_STMT extends MySQLi_STMT_For_Debug_And_Release
+class MySQLi_STMT extends MySQLi_STMT_InAllCase
 {
     /**
      * @var bool Does a results of rows exist?
