@@ -9,6 +9,10 @@
  *
  * PHP version 5.3
  *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
+ *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
  * All rights reserved.
@@ -56,6 +60,7 @@ namespace Validate;
  */
 class MySQLi_Result extends MySQLi_Result_For_InAllCase
 {
+
     /**
      * Rapper method of "MySQLi_Result::__construct()" for verification
      *
@@ -248,6 +253,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
 
         parent::field_seek($fieldNumber);
     }
+
 }
 
 ?>

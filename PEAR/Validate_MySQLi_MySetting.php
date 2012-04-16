@@ -2,18 +2,22 @@
 
 /**
  * This is file for various setting.
- * 
+ *
  * As for procedure, please, refer to the file level document block of Validate/MySQLi.php.
- * 
+ *
  * PHP version 5.3
- * 
+ *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
+ *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice,
@@ -39,7 +43,6 @@
  * @version  SVN: $Id$
  * @link     http://pear.php.net/package/BreakpointDebugging
  */
-
 // File to have "use" keyword does not inherit scope into a file including itself,
 // also it does not inherit scope into a file including,
 // and moreover "use" keyword alias has priority over class definition,
@@ -47,7 +50,6 @@
 use \BreakpointDebugging as B;
 
 require_once 'BreakpointDebugging.php'; // 'BreakpointDebugging.php' must require_once because it is base of all class, and it sets php.ini, and it sets autoload.
-
 ////////////////////////////////////////////////////////////////////////////////
 // User place folder (Default is empty.)
 
@@ -61,5 +63,4 @@ require_once 'BreakpointDebugging.php'; // 'BreakpointDebugging.php' must requir
 if (!($_BreakpointDebugging_EXE_MODE & B::RELEASE)) { // In case of not release.
     include_once './Validate_MySQLi_MySetting_Option.php';
 }
-
 ?>

@@ -8,6 +8,10 @@
  *
  * PHP version 5.3
  *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
+ *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
  * All rights reserved.
@@ -49,9 +53,9 @@ namespace Validate;
 // therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
-require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
-
 global $_BreakpointDebugging_EXE_MODE;
+
+require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
 
 /**
  * This is wrapper class of MySQLi_STMT class.
@@ -80,6 +84,30 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      * @var bool Did this close?
      */
     protected $pr_isClose = false;
+
+    /**
+     * Constructor for override
+     *
+     * @param object $pNativeClass "\MySQLi_STMT" native class
+     * @param object $pMySqlI      "\Validate\MySQLi" class
+     */
+    function __construct($pNativeClass, $pMySqlI)
+    {
+        // This will be able to override without inheriting to a native class.
+        parent::__construct($pNativeClass);
+        $this->_pr_pMySqlI = $pMySqlI;
+    }
+
+    /**
+     * Destructor for close
+     */
+    function __destruct()
+    {
+        // In case of not closing
+        if (!$this->pr_isClose) {
+            $this->close();
+        }
+    }
 
     /**
      * This throws "MySQLi_Error_Exception".
@@ -121,32 +149,51 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Constructor for override
+     * Safe "\Validate\MySQLi_STMT::bind_param()"
      *
-     * @param object $pNativeClass "\MySQLi_STMT" native class
-     * @param object $pMySqlI      "\Validate\MySQLi" class
+     * @param array $refParams Reference parameters
+     *
+     * @return void
+     *
+     * @example safeBindParam(array('is', &$inputPercentage, &$inputCustomerName));
      */
-    function __construct($pNativeClass, $pMySqlI)
+    function safeBindParam($refParams)
     {
-        // This will be able to override without inheriting to a native class.
-        parent::__construct($pNativeClass);
-        $this->_pr_pMySqlI = $pMySqlI;
-    }
-
-    /**
-     * Destructor for close
-     */
-    function __destruct()
-    {
-        // In case of not closing
-        if (!$this->pr_isClose) {
-            $this->close();
+        $queryParamType = $refParams[0];
+        $charNumber = strlen($queryParamType);
+        for ($charCount = 0, $paramCount = 1; $charCount < $charNumber; $charCount++, $paramCount++) {
+            $queryParam = $refParams[$paramCount];
+            switch ($queryParamType[$charCount]) {
+            case 'i': // integer type
+                $queryParam = mb_convert_kana($queryParam, 'a');
+                // Verifies integer.
+                if (preg_match('`^[+-]?[0-9]+$`xX', $queryParam) === 0) {
+                    $this->_pr_pMySqlI->_throwQueryErrorException();
+                }
+                break;
+            case 'd': // double type
+                $queryParam = mb_convert_kana($queryParam, 'a');
+                // Verifies float.
+                if (preg_match('`^[+-]?[.0-9]*[0-9]$`xX', $queryParam) === 0) {
+                    $this->_pr_pMySqlI->_throwQueryErrorException();
+                }
+                break;
+            case 's': // string type
+            case 'b': // blob type
+                //$queryParam = $this->real_escape_string($queryParam);
+                //$queryParam = "'$queryParam'";
+                break;
+            default:
+                assert(false);
+            }
+            //$query = substr_replace($query, $queryParam, strpos($query, '?'), strlen('?'));
         }
+        return call_user_func_array(array($this->pr_pNativeClass, 'bind_param'), $refParams);
     }
 
     /**
      * Rapper method of "MySQLi_STMT::bind_param()" for a variable length reference parameter
-     * The warning: Signature is different because this is a variable length reference parameter.
+     * Warning: Signature is different because this is a variable length reference parameter.
      *
      * @param array $refParams Reference parameters
      *
@@ -172,7 +219,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
 
     /**
      * Rapper method of "MySQLi_STMT::bind_result()" for a variable length reference parameter
-     * The warning: Signature is different because this is a variable length reference parameter.
+     * Warning: Signature is different because this is a variable length reference parameter.
      *
      * @param array $refParams Reference parameters
      *
@@ -258,7 +305,6 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
         // The change pointer to "\mysqli_result" class object. (=ID). It isn't possible to return a derivation class.
         $pMysqliResult = $this->pr_pNativeClass->result_metadata();
         if (!$pMysqliResult) {
-            //throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
             MySQLi::throwException('\Validate\MySQLi_Query_Error_Exception', $this->pr_pNativeClass->error, $this->pr_pNativeClass->errno);
         }
         return new MySQLi_Result($pMysqliResult, $this->_pr_pMySqlI);

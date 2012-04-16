@@ -9,6 +9,10 @@
  *
  * PHP version 5.3
  *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
+ *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
  * All rights reserved.
@@ -56,6 +60,7 @@ namespace Validate;
  */
 class MySQLi extends MySQLi_InAllCase
 {
+
     /**
      * Rapper method of "MySQLi::__construct()" for verification
      */
@@ -111,6 +116,29 @@ class MySQLi extends MySQLi_InAllCase
         return false;
     }
 
+    /**
+     * "\Validate\MySQLi::safeQuery()" for verification
+     *
+     * @param string $query          Same as first parameter of "\MySQLi::prepare()"
+     * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param"
+     * [param4, [...]] mixed $refParams Same as parameter of order greater than first of "\MySQLi_STMT::bind_param"
+     *
+     * @return Same.
+     *
+     * @example safeQuery('SELECT ColumA FROM TableA WHERE (NumericColum >= ?) AND (StringColum LIKE ?)', 'is', $NumericColum, $StringColum);
+     */
+    function safeQuery($query, $queryParamType)
+    {
+        assert(is_string($query));
+        assert(is_string($queryParamType));
+        assert(strlen($queryParamType) === func_num_args() - 2);
+        assert(strpos($query, '?') !== false);
+
+        $return = call_user_func_array(array('parent', 'safeQuery'), \func_get_args());
+        assert($return !== false);
+        return $return;
+    }
+
     // This omits because it isn't possible to use with MyISAM storage engine.
     // bool MySQLi::autocommit(bool $mode)
 
@@ -128,10 +156,8 @@ class MySQLi extends MySQLi_InAllCase
 
     // This omits because it isn't possible to use with MyISAM storage engine.
     // bool MySQLi::commit(void)
-
     // This doesn't use because this debugs using debugger.
     // bool MySQLi::debug(string $message)
-
     // This doesn't use the dump because this is obscure.
     // bool MySQLi::dump_debug_info(void)
 
@@ -276,7 +302,7 @@ class MySQLi extends MySQLi_InAllCase
             assert(is_string($socketNameOrNamedPipe));
         case 5:
             assert(is_int($portNumber));
-            assert(0 <=  $portNumber && $portNumber <= 65535);
+            assert(0 <= $portNumber && $portNumber <= 65535);
         case 4:
             assert(is_string($databaseName));
         case 3:
@@ -332,10 +358,8 @@ class MySQLi extends MySQLi_InAllCase
 
     // This doesn't use because this doesn't use MySQLi::multi_query().
     // bool MySQLi::more_results(void)
-
     // This doesn't use because it is for security and it becomes complicated code.
     // bool MySQLi::multi_query(string $query)
-
     // This doesn't use because this doesn't use MySQLi::multi_query().
     // bool MySQLi::next_result(void)
 
@@ -447,10 +471,8 @@ class MySQLi extends MySQLi_InAllCase
 
     // This doesn't exist at MySQLi library.
     // void MySQLi::set_local_infile_default(void)
-
     // This doesn't exist at MySQLi library.
     // bool MySQLi::set_local_infile_handler(MySQLi $link , callback $read_func)
-
     // This doesn't exist at MySQLi library.
     // bool MySQLi::ssl_set(string $key , string $cert , string $ca , string $capath , string $cipher)
 
@@ -517,6 +539,7 @@ class MySQLi extends MySQLi_InAllCase
 
         return parent::use_result();
     }
+
 }
 
 ?>

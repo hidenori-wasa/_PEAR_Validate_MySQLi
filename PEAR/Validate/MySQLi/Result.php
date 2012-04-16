@@ -2,19 +2,23 @@
 
 /**
  * This file can make error handling of MySQLi_Result without writing a code by including.
- * 
+ *
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
  *       Method name "<class name>::<method name>" is not in camel caps format
- * 
+ *
  * PHP version 5.3
- * 
+ *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
+ *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice,
@@ -43,13 +47,13 @@
 
 namespace Validate;
 
-require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
-
 global $_BreakpointDebugging_EXE_MODE;
+
+require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
 
 /**
  * This is wrapper class of MySQLi_Result class.
- * 
+ *
  * @category PHP
  * @package  Validate_MySQLi
  * @author   Hidenori Wasa <wasa_@nifty.com>
@@ -59,24 +63,25 @@ global $_BreakpointDebugging_EXE_MODE;
  */
 class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
 {
+
     /**
      * @var string Native class name ( This fixes the variable name ). This is using a delay lexical binding for purpose that class objects becomes separate names in basic class.
      */
     protected static $pr_nativeClassName = '\MySQLi_Result';
-    
+
     /**
      * @var int The change pointer to "MySQLi" class object. (ID)
      */
     private $_pr_pMySqlI;
-    
+
     /**
      * @var bool Did this close?
      */
     protected $pr_isClose = false;
-    
+
     /**
      * Constructor for override
-     * 
+     *
      * @param object $pNativeClass "\MySQLi_Result" native class
      * @param object $pMySqlI      "\Validate\MySQLi" class
      */
@@ -86,7 +91,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
         parent::__construct($pNativeClass);
         $this->_pr_pMySqlI = $pMySqlI;
     }
-    
+
     /**
      * Destructor for close
      */
@@ -97,10 +102,10 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
             $this->close();
         }
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::close()" for error handling
-     * 
+     *
      * @return Same
      */
     function close()
@@ -109,32 +114,32 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
         // Enable close flag.
         $this->pr_isClose = true;
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::free()" for error handling
-     * 
+     *
      * @return Same
      */
     function free()
     {
         $this->close();
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::free_result()" for error handling
-     * 
+     *
      * @return Same
      */
     function free_result()
     {
         $this->close();
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::data_seek()" for error handling
-     * 
+     *
      * @param int $offset Same
-     * 
+     *
      * @return void
      */
     function data_seek($offset)
@@ -143,12 +148,12 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
             $this->_pr_pMySqlI->throwErrorException();
         }
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::fetch_field_direct()" for error handling
-     * 
+     *
      * @param int $fieldNumber Same
-     * 
+     *
      * @return Same
      */
     function fetch_field_direct($fieldNumber)
@@ -159,10 +164,10 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
         }
         return $return;
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::fetch_fields()" for error handling
-     * 
+     *
      * @return Same
      */
     function fetch_fields()
@@ -173,12 +178,12 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
         }
         return $return;
     }
-    
+
     /**
      * Rapper method of "MySQLi_Result::field_seek()" for error handling
-     * 
+     *
      * @param int $fieldNumber Same
-     * 
+     *
      * @return void
      */
     function field_seek($fieldNumber)
@@ -187,13 +192,14 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
             $this->_pr_pMySqlI->throwErrorException();
         }
     }
+
 }
 
 if ($_BreakpointDebugging_EXE_MODE & \BreakpointDebugging::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
      * This class detail is 'Result_Option.php' file.
-     * 
+     *
      * @category PHP
      * @package  Validate_MySQLi
      * @author   Hidenori Wasa <wasa_@nifty.com>
@@ -201,11 +207,13 @@ if ($_BreakpointDebugging_EXE_MODE & \BreakpointDebugging::RELEASE) { // In case
      * @version  Release: @package_version@
      * @link     http://pear.php.net/package/Validate/MySQLi
      */
+
     class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
+
     }
+
 } else { // In case of not release.
     include_once __DIR__ . '/Result_Option.php';
 }
-
 ?>

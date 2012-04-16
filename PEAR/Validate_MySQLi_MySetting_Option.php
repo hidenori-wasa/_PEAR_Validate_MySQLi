@@ -2,19 +2,23 @@
 
 /**
  * This file is code except for release, therefore it does not read in case of release.
- * 
+ *
  * This reduces load of PHP parser in release mode, then it does speed up.
  * As for procedure, please, refer to the file level document block of Validate/MySQLi.php.
- * 
+ *
  * PHP version 5.3
- * 
+ *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
+ *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice,
@@ -40,7 +44,6 @@
  * @version  SVN: $Id$
  * @link     http://pear.php.net/package/Validate/MySQLi
  */
-
 // File to have "use" keyword does not inherit scope into a file including itself,
 // also it does not inherit scope into a file including,
 // and moreover "use" keyword alias has priority over class definition,
@@ -60,5 +63,4 @@ B::iniCheck('mysqli.max_links', '-1', 'This is different from the default. This 
 // "mysqli.default_user" follows it because it is server setting.
 B::iniSet('mysqli.default_pw', ''); // This doesn't use because "mysqli.default_pw" is stolen.
 B::iniCheck('mysqli.reconnect', '', 'This is different from the default. This is recommended to set "mysqli.reconnect = Off" inside of "php.ini" file.');
-
 ?>

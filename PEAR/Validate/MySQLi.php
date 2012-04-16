@@ -19,7 +19,9 @@
  *      "require_once './BreakpointDebugging_MySetting.php';"
  * Procedure 5: Please, rewrite following in your project php file.
  *      from "new \MySQLi" to "new \Validate\MySQLi"
- * Procedure 6: Please, copy following in your project "my.ini" or "my.cnf" file.
+ * Procedure 6: Please, change signature because this is a variable length reference parameter.
+ *      MySQLi_STMT::bind_param(), MySQLi_STMT::bind_result()
+ * Procedure 7: Please, copy following in your project "my.ini" or "my.cnf" file.
  *      [mysqld]
  *      # It sets character sets of server, data base, table, column to "utf8". It sets collating sequence to the default "utf8_general_ci".
  *      character_set_server=utf8
@@ -50,6 +52,10 @@
  *              \Validate\MySQLi_Error_Exception
  *
  * PHP version 5.3
+ *
+ * LICENSE OVERVIEW:
+ * 1. Do not change license text.
+ * 2. Copyrighters do not take responsibility for this file code.
  *
  * LICENSE:
  * Copyright (c) 2012, Hidenori Wasa
@@ -92,22 +98,9 @@ namespace Validate;
 // therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
-//require_once __DIR__ . '/MySQLi/OverrideClass.php';
-require_once __DIR__ . '/../BreakpointDebugging/OverrideClass.php';
-
 global $_BreakpointDebugging_EXE_MODE;
 
-//B::iniCheck('mysqli.max_persistent', '-1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.max_persistent = -1".');
-//B::iniCheck('mysqli.allow_local_infile', '1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.allow_local_infile = On".');
-//B::iniCheck('mysqli.allow_persistent', '1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.allow_persistent = On".');
-//B::iniCheck('mysqli.max_links', '-1', 'This is different from the default. This is recommended to set "php.ini" file to "mysqli.max_links = -1".');
-//// "mysqli.cache_size" follows it because it is server setting.
-//// "mysqli.default_port" follows setting of server so as not to catch on fire wall.
-//// "mysqli.default_socket" follows it because it is server setting.
-//// "mysqli.default_host" follows it because it is server setting.
-//// "mysqli.default_user" follows it because it is server setting.
-//B::iniSet('mysqli.default_pw', ''); // This doesn't use because "mysqli.default_pw" is stolen.
-//B::iniCheck('mysqli.reconnect', '', 'This is different from the default. This is recommended to set "mysqli.reconnect = Off" inside of "php.ini" file.');
+require_once __DIR__ . '/../BreakpointDebugging/OverrideClass.php';
 require_once './Validate_MySQLi_MySetting.php';
 
 /**
@@ -185,20 +178,6 @@ class MySQLi_Connect_Exception extends MySQLi_Exception
 
 }
 
-///**
-// * This class is own package warning exception.
-// *
-// * @category PHP
-// * @package  Validate_MySQLi
-// * @author   Hidenori Wasa <wasa_@nifty.com>
-// * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
-// * @version  Release: @package_version@
-// * @link     http://pear.php.net/package/Validate/MySQLi
-// */
-//class MySQLi_Warning_Exception extends MySQLi_Exception
-//{
-//}
-
 /**
  * This class is own package error exception.
  *
@@ -264,7 +243,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      *
      * @return void
      */
-    private function _throwQueryErrorException()
+    function _throwQueryErrorException()
     {
         throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
     }
@@ -317,7 +296,6 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         $pNativeClass = self::newArray(self::$pr_nativeClassName, func_get_args());
         // Connection check
         if ($pNativeClass->connect_errno) {
-            //throw new MySQLi_Connect_Exception(B::convertMbString($pNativeClass->connect_error), $pNativeClass->connect_errno);
             MySQLi::throwException('\Validate\MySQLi_Connect_Exception', $pNativeClass->connect_error, $pNativeClass->connect_errno);
         }
         // This becomes overriding without inheritance of native class ( extension module class ).
@@ -336,7 +314,51 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::query()" for error handling
+     * Safe "\Validate\MySQLi::query()"
+     *
+     * @param string $query          Same as first parameter of "\MySQLi::prepare()"
+     * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param"
+     * [param4, [...]] mixed $refParams Same as parameter of order greater than first of "\MySQLi_STMT::bind_param"
+     *
+     * @return Same.
+     *
+     * @example safeQuery('SELECT ColumA FROM TableA WHERE (NumericColum >= ?) AND (StringColum LIKE ?)', 'is', $NumericColum, $StringColum);
+     */
+    function safeQuery($query, $queryParamType)
+    {
+        $charNumber = strlen($queryParamType);
+        for ($charCount = 0, $paramCount = 2; $charCount < $charNumber; $charCount++, $paramCount++) {
+            $queryParam = func_get_arg($paramCount);
+            switch ($queryParamType[$charCount]) {
+            case 'i': // integer type
+                $queryParam = mb_convert_kana($queryParam, 'a');
+                // Verifies integer.
+                if (preg_match('`^[+-]?[0-9]+$`xX', $queryParam) === 0) {
+                    $this->_throwQueryErrorException();
+                }
+                break;
+            case 'd': // double type
+                $queryParam = mb_convert_kana($queryParam, 'a');
+                // Verifies float.
+                if (preg_match('`^[+-]?[.0-9]*[0-9]$`xX', $queryParam) === 0) {
+                    $this->_throwQueryErrorException();
+                }
+                break;
+            case 's': // string type
+            case 'b': // blob type
+                $queryParam = $this->real_escape_string($queryParam);
+                $queryParam = "'$queryParam'";
+                break;
+            default:
+                assert(false);
+            }
+            $query = substr_replace($query, $queryParam, strpos($query, '?'), strlen('?'));
+        }
+        return $this->query($query);
+    }
+
+    /**
+     * Rapper method of "\MySQLi::query()" for error handling
      *
      * @param string $query      Same
      * @param int    $resultMode Same
@@ -396,7 +418,6 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         call_user_func_array(array($this->pr_pNativeClass, 'real_connect'), func_get_args());
         // Connection check
         if ($this->pr_pNativeClass->connect_errno) {
-            //throw new MySQLi_Connect_Exception(B::convertMbString($this->pr_pNativeClass->connect_error), $this->pr_pNativeClass->connect_errno);
             MySQLi::throwException('\Validate\MySQLi_Connect_Exception', $this->pr_pNativeClass->connect_error, $this->pr_pNativeClass->connect_errno);
         }
     }

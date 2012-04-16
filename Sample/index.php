@@ -4,53 +4,69 @@ namespace Your_Name;
 
 require_once './ExampleDb.php';
 
-// Connect database.
-$mySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass', 'example_db');
-// Creates prepared statement ( the SQL sentence which was prepared for the parameter embedding ).
-$mySqlIStatement = $mySqlI->prepare('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) OR ( CustomerName LIKE ?)');
-// User input value ( DOS attack ). This quoted from MySQL manual.
-// "\MySQLi_STMT" makes a invalid DOS attack by ignoring since then white space of SQL statement.
-$inputPercentage = '50 OR 1=1';
-$inputCustomerName = '_ASA OR 1=1';
-// Escapes ( SQL scripting attack measure ) the MySQL special character of user input value, and set value to the bound variables.
-$percentage = $mySqlI->real_escape_string($inputPercentage);
-$customerName = $mySqlI->real_escape_string($inputCustomerName);
-// Bind up a parameter to prepared statement marker ('?').
-$mySqlIStatement->bind_param(array('is', &$percentage, &$customerName));
-// Execute query.
-$mySqlIStatement->execute();
-// Construct columns-attribute-results-set by prepared statement.
-echo 'mysqli_stmt::result_metadata()<br/>';
-$result = $mySqlIStatement->result_metadata();
-// Return columns-attribute-results-set by prepared statement.
-echo 'mysqli_result::fetch_field()';
-while ($return = $result->fetch_field()) {
-    var_dump($return);
-}
-// Close results-set.
-$result->close();
-// Store result to a buffer.
-$mySqlIStatement->store_result();
-// Bind up the result columns to variables.
-$mySqlIStatement->bind_result(array(&$resultPercentage, &$resultCustomerName));
-echo 'mysqli_stmt::fetch()';
-while (true) {
-    // Acquires result per row.
-    $result = $mySqlIStatement->fetch();
-    if ($result === true) { // In case of success
-        // Display result.
-        var_dump($resultPercentage, $resultCustomerName);
-    } else if ($result === null) { // When there is not result row of the remainder
-        break;
-    } else {
-        assert(false);
-    }
-}
-// Free up result of buffer.
-$mySqlIStatement->free_result();
-// Close prepared statement.
-$mySqlIStatement->close();
-// Close database connection.
-$mySqlI->close();
+$testNumber = 1;
 
+// Connect database.
+$pMySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass', 'example_db');
+if ($testNumber === 1) {
+    // Execute safe query, then display results.
+    try {
+        // User input value ( DOS attack ). This quoted from MySQL manual.
+        $inputPercentage = '＋5０ OR 1=1';
+        $inputCustomerName = 'β OR 1=1';
+        $result = $pMySqlI->safeQuery('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) AND ( CustomerName = ?)', 'is', $inputPercentage, $inputCustomerName);
+    } catch (\Validate\MySQLi_Query_Exception $exception) {
+        echo 'Input value is mistake.';
+        throw $exception;
+    }
+    while ($field = $result->fetch_array()) {
+        var_dump($field);
+    }
+    $result->close();
+} else if ($testNumber === 2) {
+    // Creates prepared statement ( the SQL sentence which was prepared for the parameter embedding ).
+    $pMySqlIStatement = $pMySqlI->prepare('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) AND ( CustomerName = ?)');
+    // User input value ( DOS attack ). This quoted from MySQL manual.
+    // "\MySQLi_STMT" blocks out DOS attack.
+    $inputPercentage = '＋5０ OR 1=1';
+    $inputCustomerName = 'β OR 1=1';
+    // Bind up a parameter to prepared statement marker ('?').
+    // $pMySqlIStatement->bind_param(array('is', &$inputPercentage, &$inputCustomerName));
+    $pMySqlIStatement->safeBindParam(array('is', &$inputPercentage, &$inputCustomerName));
+    // Execute query.
+    $pMySqlIStatement->execute();
+    // Construct columns-attribute-results-set by prepared statement.
+    echo 'mysqli_stmt::result_metadata()<br/>';
+    $pResult = $pMySqlIStatement->result_metadata();
+    // Return columns-attribute-results-set by prepared statement.
+    echo 'mysqli_result::fetch_field()';
+    while ($return = $pResult->fetch_field()) {
+        var_dump($return);
+    }
+    // Close results-set.
+    $pResult->close();
+    // Store result to a buffer.
+    $pMySqlIStatement->store_result();
+    // Bind up the result columns to variables.
+    $pMySqlIStatement->bind_result(array(&$resultPercentage, &$resultCustomerName));
+    echo 'mysqli_stmt::fetch()';
+    while (true) {
+        // Acquires result per row.
+        $pResult = $pMySqlIStatement->fetch();
+        if ($pResult === true) { // In case of success
+            // Display result.
+            var_dump($resultPercentage, $resultCustomerName);
+        } else if ($pResult === null) { // When there is not result row of the remainder
+            break;
+        } else {
+            assert(false);
+        }
+    }
+    // Free up result of buffer.
+    $pMySqlIStatement->free_result();
+    // Close prepared statement.
+    $pMySqlIStatement->close();
+}
+// Close database connection.
+$pMySqlI->close();
 ?>
