@@ -11,9 +11,10 @@ $pMySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass', 'example_db');
 if ($testNumber === 1) {
     // Execute safe query, then display results.
     try {
-        // User input value ( DOS attack ). This quoted from MySQL manual.
-        $inputPercentage = '＋5０ OR 1=1';
-        $inputCustomerName = 'β OR 1=1';
+        // $inputPercentage = '＋5０ OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
+        $inputPercentage = '＋5０';
+        // $inputCustomerName = 'β OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
+        $inputCustomerName = 'β';
         $result = $pMySqlI->safeQuery('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) AND ( CustomerName = ?)', 'is', $inputPercentage, $inputCustomerName);
     } catch (\Validate\MySQLi_Query_Exception $exception) {
         echo 'Input value is mistake.';
@@ -27,9 +28,11 @@ if ($testNumber === 1) {
     // Creates prepared statement ( the SQL sentence which was prepared for the parameter embedding ).
     $pMySqlIStatement = $pMySqlI->prepare('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) AND ( CustomerName = ?)');
     // User input value ( DOS attack ). This quoted from MySQL manual.
-    // "\MySQLi_STMT" blocks out DOS attack.
-    $inputPercentage = '＋5０ OR 1=1';
-    $inputCustomerName = 'β OR 1=1';
+
+    // $inputPercentage = '＋5０ OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
+    $inputPercentage = '＋5０';
+    // $inputCustomerName = 'β OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
+    $inputCustomerName = 'β';
     // Bind up a parameter to prepared statement marker ('?').
     // $pMySqlIStatement->bind_param(array('is', &$inputPercentage, &$inputCustomerName));
     $pMySqlIStatement->safeBindParam(array('is', &$inputPercentage, &$inputCustomerName));
@@ -53,10 +56,10 @@ if ($testNumber === 1) {
     while (true) {
         // Acquires result per row.
         $pResult = $pMySqlIStatement->fetch();
-        if ($pResult === true) { // In case of success
+        if ($pResult === true) { // In case of success.
             // Display result.
             var_dump($resultPercentage, $resultCustomerName);
-        } else if ($pResult === null) { // When there is not result row of the remainder
+        } else if ($pResult === null) { // When there is not result row of the remainder.
             break;
         } else {
             assert(false);
@@ -69,4 +72,5 @@ if ($testNumber === 1) {
 }
 // Close database connection.
 $pMySqlI->close();
+echo 'END';
 ?>

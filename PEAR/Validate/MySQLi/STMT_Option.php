@@ -72,10 +72,10 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     private $_pr_isBuffering = false;
 
     /**
-     * Rapper method of "MySQLi_STMT::__construct()" for verification
+     * Rapper method of "MySQLi_STMT::__construct()" for verification.
      *
-     * @param object $pNativeClass "\MySQLi_STMT" native class
-     * @param object $pMySqlI      "\Validate\MySQLi" class
+     * @param object $pNativeClass "\MySQLi_STMT" native class.
+     * @param object $pMySqlI      "\Validate\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -87,9 +87,9 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * "\Validate\MySQLi_STMT::safeBindParam()" for verification
+     * "\Validate\MySQLi_STMT::safeBindParam()" for verification.
      *
-     * @param array $refParams Reference parameters
+     * @param array $refParams Reference parameters.
      *
      * @return void
      *
@@ -104,10 +104,10 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::bind_param()" for verification
+     * Rapper method of "MySQLi_STMT::bind_param()" for verification.
      * Warning: Signature is different because this is a variable length reference parameter.
      *
-     * @param array $refParams Reference parameters
+     * @param array $refParams Reference parameters.
      *
      * @return void
      *
@@ -123,7 +123,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::execute()" for verification
+     * Rapper method of "MySQLi_STMT::execute()" for verification.
      *
      * @return void
      */
@@ -141,10 +141,10 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::bind_result()" for verification
+     * Rapper method of "MySQLi_STMT::bind_result()" for verification.
      * Warning: Signature is different because this is a variable length reference parameter.
      *
-     * @param array $refParams Reference parameters
+     * @param array $refParams Reference parameters.
      *
      * @return void
      *
@@ -160,9 +160,9 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::fetch()" for verification
+     * Rapper method of "MySQLi_STMT::fetch()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function fetch()
     {
@@ -173,7 +173,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::close()" for verification
+     * Rapper method of "MySQLi_STMT::close()" for verification.
      *
      * @return void
      */
@@ -190,7 +190,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::store_result()" for verification
+     * Rapper method of "MySQLi_STMT::store_result()" for verification.
      *
      * @return void
      */
@@ -204,9 +204,9 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::free_result()" for verification
+     * Rapper method of "MySQLi_STMT::free_result()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function free_result()
     {
@@ -218,10 +218,10 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::send_long_data()" for verification
+     * Rapper method of "MySQLi_STMT::send_long_data()" for verification.
      *
-     * @param int    $paramNumber Same
-     * @param string $sendData    Same
+     * @param int    $paramNumber Same.
+     * @param string $sendData    Same.
      *
      * @return void
      */
@@ -236,9 +236,9 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::prepare()" for verification
+     * Rapper method of "MySQLi_STMT::prepare()" for verification.
      *
-     * @param string $query Same
+     * @param string $query Same.
      *
      * @return void
      */
@@ -253,7 +253,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::result_metadata()" for verification
+     * Rapper method of "MySQLi_STMT::result_metadata()" for verification.
      *
      * @return \Validate\MySQLi_Result
      */
@@ -265,7 +265,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::reset()" for verification
+     * Rapper method of "MySQLi_STMT::reset()" for verification.
      *
      * @return void
      */
@@ -280,11 +280,11 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::data_seek()" for verification
+     * Rapper method of "MySQLi_STMT::data_seek()" for verification.
      *
-     * @param int $rowNumber Same
+     * @param int $rowNumber Same.
      *
-     * @return Same
+     * @return Same.
      */
     function data_seek($rowNumber)
     {
@@ -295,11 +295,11 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::attr_get()" for verification
+     * Rapper method of "MySQLi_STMT::attr_get()" for verification.
      *
-     * @param int $attr Same
+     * @param int $attr Same.
      *
-     * @return Same
+     * @return Same.
      */
     function attr_get($attr)
     {
@@ -312,10 +312,10 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::attr_set()" for verification
+     * Rapper method of "MySQLi_STMT::attr_set()" for verification.
      *
-     * @param int $attr Same
-     * @param int $mode Same
+     * @param int $attr Same.
+     * @param int $mode Same.
      *
      * @return void
      */

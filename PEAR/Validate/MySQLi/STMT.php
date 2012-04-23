@@ -86,10 +86,10 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     protected $pr_isClose = false;
 
     /**
-     * Constructor for override
+     * Constructor for override.
      *
-     * @param object $pNativeClass "\MySQLi_STMT" native class
-     * @param object $pMySqlI      "\Validate\MySQLi" class
+     * @param object $pNativeClass "\MySQLi_STMT" native class.
+     * @param object $pMySqlI      "\Validate\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -99,11 +99,11 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Destructor for close
+     * Destructor for close.
      */
     function __destruct()
     {
-        // In case of not closing
+        // In case of not closing.
         if (!$this->pr_isClose) {
             $this->close();
         }
@@ -149,9 +149,9 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Safe "\Validate\MySQLi_STMT::bind_param()"
+     * Safe "\Validate\MySQLi_STMT::bind_param()".
      *
-     * @param array $refParams Reference parameters
+     * @param array $refParams Reference parameters.
      *
      * @return void
      *
@@ -164,38 +164,35 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
         for ($charCount = 0, $paramCount = 1; $charCount < $charNumber; $charCount++, $paramCount++) {
             $queryParam = $refParams[$paramCount];
             switch ($queryParamType[$charCount]) {
-            case 'i': // integer type
+            case 'i': // Integer type.
                 $queryParam = mb_convert_kana($queryParam, 'a');
                 // Verifies integer.
                 if (preg_match('`^[+-]?[0-9]+$`xX', $queryParam) === 0) {
-                    $this->_pr_pMySqlI->_throwQueryErrorException();
+                    $this->_pr_pMySqlI->throwQueryErrorException();
                 }
                 break;
-            case 'd': // double type
+            case 'd': // Double type.
                 $queryParam = mb_convert_kana($queryParam, 'a');
                 // Verifies float.
                 if (preg_match('`^[+-]?[.0-9]*[0-9]$`xX', $queryParam) === 0) {
-                    $this->_pr_pMySqlI->_throwQueryErrorException();
+                    $this->_pr_pMySqlI->throwQueryErrorException();
                 }
                 break;
-            case 's': // string type
-            case 'b': // blob type
-                //$queryParam = $this->real_escape_string($queryParam);
-                //$queryParam = "'$queryParam'";
+            case 's': // String type.
+            case 'b': // Blob type.
                 break;
             default:
                 assert(false);
             }
-            //$query = substr_replace($query, $queryParam, strpos($query, '?'), strlen('?'));
         }
         return call_user_func_array(array($this->pr_pNativeClass, 'bind_param'), $refParams);
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::bind_param()" for a variable length reference parameter
+     * Rapper method of "MySQLi_STMT::bind_param()" for a variable length reference parameter.
      * Warning: Signature is different because this is a variable length reference parameter.
      *
-     * @param array $refParams Reference parameters
+     * @param array $refParams Reference parameters.
      *
      * @return void
      */
@@ -205,7 +202,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::execute()" for error handling
+     * Rapper method of "MySQLi_STMT::execute()" for error handling.
      *
      * @return void
      */
@@ -218,12 +215,12 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::bind_result()" for a variable length reference parameter
+     * Rapper method of "MySQLi_STMT::bind_result()" for a variable length reference parameter.
      * Warning: Signature is different because this is a variable length reference parameter.
      *
-     * @param array $refParams Reference parameters
+     * @param array $refParams Reference parameters.
      *
-     * @return Same
+     * @return Same.
      */
     function bind_result($refParams)
     {
@@ -231,9 +228,9 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::fetch()" for error handling
+     * Rapper method of "MySQLi_STMT::fetch()" for error handling.
      *
-     * @return Same
+     * @return Same.
      */
     function fetch()
     {
@@ -245,9 +242,9 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::close()" for verification
+     * Rapper method of "MySQLi_STMT::close()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function close()
     {
@@ -257,7 +254,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::store_result()" for error handling
+     * Rapper method of "MySQLi_STMT::store_result()" for error handling.
      *
      * @return void
      */
@@ -269,10 +266,10 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::send_long_data()" for error handling
+     * Rapper method of "MySQLi_STMT::send_long_data()" for error handling.
      *
-     * @param int    $paramNumber The prepared statement parameter number (0-)
-     * @param string $sendData    Data to send to the prepared statement parameter
+     * @param int    $paramNumber The prepared statement parameter number. (0-)
+     * @param string $sendData    Data to send to the prepared statement parameter.
      *
      * @return void
      */
@@ -296,7 +293,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::result_metadata()" for error handling
+     * Rapper method of "MySQLi_STMT::result_metadata()" for error handling.
      *
      * @return \Validate\MySQLi_Result
      */
@@ -311,7 +308,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_STMT::reset()" for error handling
+     * Rapper method of "MySQLi_STMT::reset()" for error handling.
      *
      * @return void
      */

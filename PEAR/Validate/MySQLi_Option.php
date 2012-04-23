@@ -62,7 +62,7 @@ class MySQLi extends MySQLi_InAllCase
 {
 
     /**
-     * Rapper method of "MySQLi::__construct()" for verification
+     * Rapper method of "MySQLi::__construct()" for verification.
      */
     function __construct()
     {
@@ -90,23 +90,23 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Verification of the host name
+     * Verification of the host name.
      *
-     * @param string $hostName Host name
+     * @param string $hostName Host name.
      *
      * @return bool Is this a host name?
      */
     private function _isHost($hostName)
     {
-        // In case of IPv4 or IPv6
+        // In case of IPv4 or IPv6.
         if (filter_var($hostName, FILTER_VALIDATE_IP) !== false) {
             return true;
         }
-        // In case of 'localhost'
+        // In case of 'localhost'.
         if (strncasecmp($hostName, 'localhost', strlen('localhost')) === 0) {
             return true;
         }
-        // In case of the host name
+        // In case of the host name.
         $topEnd = '[a-z0-9]';
         $domain = $topEnd . '([a-z0-9\-]{0,61}' . $topEnd . ')?';
         $pattern = '`^' . $domain . '\.' . $domain . '(\.' . $domain . ')* $`xXi'; // Regular expression of the host name
@@ -117,11 +117,11 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * "\Validate\MySQLi::safeQuery()" for verification
+     * "\Validate\MySQLi::safeQuery()" for verification.
      *
-     * @param string $query          Same as first parameter of "\MySQLi::prepare()"
-     * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param"
-     * [param4, [...]] mixed $refParams Same as parameter of order greater than first of "\MySQLi_STMT::bind_param"
+     * @param string $query          Same as first parameter of "\MySQLi::prepare()".
+     * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param".
+     * [param4, [...]] mixed $refParams Same as parameter of order greater than first of "\MySQLi_STMT::bind_param".
      *
      * @return Same.
      *
@@ -143,9 +143,9 @@ class MySQLi extends MySQLi_InAllCase
     // bool MySQLi::autocommit(bool $mode)
 
     /**
-     * Rapper method of "MySQLi::character_set_name()" for verification
+     * Rapper method of "MySQLi::character_set_name()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function character_set_name()
     {
@@ -162,9 +162,9 @@ class MySQLi extends MySQLi_InAllCase
     // bool MySQLi::dump_debug_info(void)
 
     /**
-     * Rapper method of "MySQLi::get_charset()" for verification
+     * Rapper method of "MySQLi::get_charset()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function get_charset()
     {
@@ -174,9 +174,9 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::get_client_info()" for verification
+     * Rapper method of "MySQLi::get_client_info()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function get_client_info()
     {
@@ -186,10 +186,10 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::get_connection_stats()" for verification
+     * Rapper method of "MySQLi::get_connection_stats()" for verification.
      * This method does not exist in "XAMPP 1.7.3".
      *
-     * @return Same
+     * @return Same.
      */
     function get_connection_stats()
     {
@@ -204,10 +204,10 @@ class MySQLi extends MySQLi_InAllCase
     // mysqli_warning MySQLi::get_warnings( void)
 
     /**
-     * Rapper method of "MySQLi::query()" for verification
+     * Rapper method of "MySQLi::query()" for verification.
      *
-     * @param string $query      Same
-     * @param int    $resultMode Same
+     * @param string $query      Same.
+     * @param int    $resultMode Same.
      *
      * @return object \Validate\MySQLi_Result
      */
@@ -228,7 +228,7 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::close()" for verification
+     * Rapper method of "MySQLi::close()" for verification.
      *
      * @return void
      */
@@ -242,11 +242,11 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::change_user()" for verification
+     * Rapper method of "MySQLi::change_user()" for verification.
      *
-     * @param string $user     Same
-     * @param string $password Same
-     * @param string $database Same
+     * @param string $user     Same.
+     * @param string $password Same.
+     * @param string $database Same.
      *
      * @return void
      */
@@ -261,10 +261,10 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::options()" for verification
+     * Rapper method of "MySQLi::options()" for verification.
      *
-     * @param int   $option Same
-     * @param mixed $value  Same
+     * @param int   $option Same.
+     * @param mixed $value  Same.
      *
      * @return void
      */
@@ -280,15 +280,15 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::real_connect()" for verification
+     * Rapper method of "MySQLi::real_connect()" for verification.
      *
-     * @param string $hostNameOrIP          Same
-     * @param string $userName              Same
-     * @param string $passWord              Same
-     * @param string $databaseName          Same
-     * @param int    $portNumber            Same
-     * @param string $socketNameOrNamedPipe Same
-     * @param int    $optionBitFlags        Same
+     * @param string $hostNameOrIP          Same.
+     * @param string $userName              Same.
+     * @param string $passWord              Same.
+     * @param string $databaseName          Same.
+     * @param int    $portNumber            Same.
+     * @param string $socketNameOrNamedPipe Same.
+     * @param int    $optionBitFlags        Same.
      *
      * @return void
      */
@@ -310,7 +310,7 @@ class MySQLi extends MySQLi_InAllCase
         case 2:
             assert(is_string($userName));
         case 1:
-            // When the prefix is "p:"
+            // When the prefix is "p:".
             if (strncasecmp($hostNameOrIP, 'p:', strlen('p:')) === 0) {
                 // This deletes a prefix.
                 $hostNameOrIP = substr($hostNameOrIP, strlen('p:'), strlen($hostNameOrIP) - strlen('p:'));
@@ -326,9 +326,9 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::set_charset()" for verification
+     * Rapper method of "MySQLi::set_charset()" for verification.
      *
-     * @param string $charset Same
+     * @param string $charset Same.
      *
      * @return void
      */
@@ -342,9 +342,9 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::kill()" for verification
+     * Rapper method of "MySQLi::kill()" for verification.
      *
-     * @param int $processid Same
+     * @param int $processid Same.
      *
      * @return void
      */
@@ -364,7 +364,7 @@ class MySQLi extends MySQLi_InAllCase
     // bool MySQLi::next_result(void)
 
     /**
-     * Rapper method of "MySQLi::ping()" for verification
+     * Rapper method of "MySQLi::ping()" for verification.
      *
      * @return void
      */
@@ -376,16 +376,16 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::poll()" for verification
+     * Rapper method of "MySQLi::poll()" for verification.
      * This method does not exist in "XAMPP 1.7.3".
      *
-     * @param array &$read   Same
-     * @param array &$error  Same
-     * @param array &$reject Same
-     * @param int   $sec     Same
-     * @param int   $usec    Same
+     * @param array &$read   Same.
+     * @param array &$error  Same.
+     * @param array &$reject Same.
+     * @param int   $sec     Same.
+     * @param int   $usec    Same.
      *
-     * @return Same
+     * @return Same.
      */
     function poll(&$read, &$error, &$reject, $sec, $usec = 0)
     {
@@ -406,11 +406,11 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::real_escape_string()" for verification
+     * Rapper method of "MySQLi::real_escape_string()" for verification.
      *
-     * @param string $escapeString Same
+     * @param string $escapeString Same.
      *
-     * @return Same
+     * @return Same.
      */
     function real_escape_string($escapeString)
     {
@@ -424,7 +424,7 @@ class MySQLi extends MySQLi_InAllCase
     // bool MySQLi::real_query( string $query)
 
     /**
-     * Rapper method of "MySQLi::reap_async_query()" for verification
+     * Rapper method of "MySQLi::reap_async_query()" for verification.
      * This method does not exist in "XAMPP 1.7.3".
      *
      * @return object \Validate\MySQLi_Result
@@ -437,9 +437,9 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::prepare()" for verification
+     * Rapper method of "MySQLi::prepare()" for verification.
      *
-     * @param string $query Same
+     * @param string $query Same.
      *
      * @return object \Validate\MySQLi_STMT
      */
@@ -455,9 +455,9 @@ class MySQLi extends MySQLi_InAllCase
     // bool MySQLi::rollback(void)
 
     /**
-     * Rapper method of "MySQLi::select_db()" for verification
+     * Rapper method of "MySQLi::select_db()" for verification.
      *
-     * @param string $database Same
+     * @param string $database Same.
      *
      * @return void
      */
@@ -477,9 +477,9 @@ class MySQLi extends MySQLi_InAllCase
     // bool MySQLi::ssl_set(string $key , string $cert , string $ca , string $capath , string $cipher)
 
     /**
-     * Rapper method of "MySQLi::stat()" for verification
+     * Rapper method of "MySQLi::stat()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function stat()
     {
@@ -490,7 +490,7 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::stmt_init()" for verification
+     * Rapper method of "MySQLi::stmt_init()" for verification.
      *
      * @return object \Validate\MySQLi_STMT
      */
@@ -503,7 +503,7 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::store_result()" for verification
+     * Rapper method of "MySQLi::store_result()" for verification.
      *
      * @return object \Validate\MySQLi_Result
      */
@@ -516,9 +516,9 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::thread_safe()" for verification
+     * Rapper method of "MySQLi::thread_safe()" for verification.
      *
-     * @return Same
+     * @return Same.
      */
     function thread_safe()
     {
@@ -528,7 +528,7 @@ class MySQLi extends MySQLi_InAllCase
     }
 
     /**
-     * Rapper method of "MySQLi::use_result()" for verification
+     * Rapper method of "MySQLi::use_result()" for verification.
      *
      * @return object \Validate\MySQLi_Result
      */

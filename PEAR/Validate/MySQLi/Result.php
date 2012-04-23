@@ -80,10 +80,10 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     protected $pr_isClose = false;
 
     /**
-     * Constructor for override
+     * Constructor for override.
      *
-     * @param object $pNativeClass "\MySQLi_Result" native class
-     * @param object $pMySqlI      "\Validate\MySQLi" class
+     * @param object $pNativeClass "\MySQLi_Result" native class.
+     * @param object $pMySqlI      "\Validate\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -93,20 +93,20 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Destructor for close
+     * Destructor for close.
      */
     function __destruct()
     {
-        // When not closed
+        // When not closed.
         if (!$this->pr_isClose) {
             $this->close();
         }
     }
 
     /**
-     * Rapper method of "MySQLi_Result::close()" for error handling
+     * Rapper method of "MySQLi_Result::close()" for error handling.
      *
-     * @return Same
+     * @return Same.
      */
     function close()
     {
@@ -116,9 +116,9 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_Result::free()" for error handling
+     * Rapper method of "MySQLi_Result::free()" for error handling.
      *
-     * @return Same
+     * @return Same.
      */
     function free()
     {
@@ -126,9 +126,9 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_Result::free_result()" for error handling
+     * Rapper method of "MySQLi_Result::free_result()" for error handling.
      *
-     * @return Same
+     * @return Same.
      */
     function free_result()
     {
@@ -136,9 +136,9 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_Result::data_seek()" for error handling
+     * Rapper method of "MySQLi_Result::data_seek()" for error handling.
      *
-     * @param int $offset Same
+     * @param int $offset Same.
      *
      * @return void
      */
@@ -150,11 +150,11 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_Result::fetch_field_direct()" for error handling
+     * Rapper method of "MySQLi_Result::fetch_field_direct()" for error handling.
      *
-     * @param int $fieldNumber Same
+     * @param int $fieldNumber Same.
      *
-     * @return Same
+     * @return Same.
      */
     function fetch_field_direct($fieldNumber)
     {
@@ -166,9 +166,9 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_Result::fetch_fields()" for error handling
+     * Rapper method of "MySQLi_Result::fetch_fields()" for error handling.
      *
-     * @return Same
+     * @return Same.
      */
     function fetch_fields()
     {
@@ -180,9 +180,9 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi_Result::field_seek()" for error handling
+     * Rapper method of "MySQLi_Result::field_seek()" for error handling.
      *
-     * @param int $fieldNumber Same
+     * @param int $fieldNumber Same.
      *
      * @return void
      */

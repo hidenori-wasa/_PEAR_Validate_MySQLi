@@ -51,6 +51,12 @@
  *              \Validate\MySQLi_Connect_Exception
  *              \Validate\MySQLi_Error_Exception
  *
+ * ### Useful function index. ###
+ * Safe "\Validate\MySQLi::query()".
+ *      function \Validate\MySQLi::safeQuery($query, $queryParamType)
+ * Safe "\Validate\MySQLi_STMT::bind_param()".
+ *      function \Validate\MySQLi_STMT::safeBindParam($refParams)
+ *
  * PHP version 5.3
  *
  * LICENSE OVERVIEW:
@@ -219,10 +225,10 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     /**
      * Throw exception.
      *
-     * @param string    $exception An exception which you want to throw
-     * @param string    $message   Exception message
-     * @param int       $code      Exception number
-     * @param Exception $previous  Previous exception
+     * @param string    $exception An exception which you want to throw.
+     * @param string    $message   Exception message.
+     * @param int       $code      Exception number.
+     * @param Exception $previous  Previous exception.
      *
      * @return void
      *
@@ -243,7 +249,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      *
      * @return void
      */
-    function _throwQueryErrorException()
+    function throwQueryErrorException()
     {
         throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
     }
@@ -265,7 +271,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     private function _checkWarning()
     {
-        // The number of warnings which except connection of MySQLi class
+        // The number of warnings which except connection of MySQLi class.
         if ($this->pr_pNativeClass->warning_count) {
             $pResult = $this->pr_pNativeClass->query('SHOW WARNINGS');
             if ($pResult) {
@@ -288,13 +294,13 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Constructor for override
+     * Constructor for override.
      */
     function __construct()
     {
         // This creates a native class object.
         $pNativeClass = self::newArray(self::$pr_nativeClassName, func_get_args());
-        // Connection check
+        // Connection check.
         if ($pNativeClass->connect_errno) {
             MySQLi::throwException('\Validate\MySQLi_Connect_Exception', $pNativeClass->connect_error, $pNativeClass->connect_errno);
         }
@@ -303,11 +309,11 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Destructor for close
+     * Destructor for close.
      */
     function __destruct()
     {
-        // When not closed
+        // When not closed.
         if (!$this->pr_isClose) {
             $this->close();
         }
@@ -316,9 +322,9 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     /**
      * Safe "\Validate\MySQLi::query()"
      *
-     * @param string $query          Same as first parameter of "\MySQLi::prepare()"
-     * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param"
-     * [param4, [...]] mixed $refParams Same as parameter of order greater than first of "\MySQLi_STMT::bind_param"
+     * @param string $query          Same as first parameter of "\MySQLi::prepare()".
+     * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param".
+     * [param4, [...]] mixed $refParams Same as parameter of order greater than first of "\MySQLi_STMT::bind_param".
      *
      * @return Same.
      *
@@ -330,22 +336,22 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         for ($charCount = 0, $paramCount = 2; $charCount < $charNumber; $charCount++, $paramCount++) {
             $queryParam = func_get_arg($paramCount);
             switch ($queryParamType[$charCount]) {
-            case 'i': // integer type
+            case 'i': // Integer type.
                 $queryParam = mb_convert_kana($queryParam, 'a');
                 // Verifies integer.
                 if (preg_match('`^[+-]?[0-9]+$`xX', $queryParam) === 0) {
-                    $this->_throwQueryErrorException();
+                    $this->throwQueryErrorException();
                 }
                 break;
-            case 'd': // double type
+            case 'd': // Double type.
                 $queryParam = mb_convert_kana($queryParam, 'a');
                 // Verifies float.
                 if (preg_match('`^[+-]?[.0-9]*[0-9]$`xX', $queryParam) === 0) {
-                    $this->_throwQueryErrorException();
+                    $this->throwQueryErrorException();
                 }
                 break;
-            case 's': // string type
-            case 'b': // blob type
+            case 's': // String type.
+            case 'b': // Blob type.
                 $queryParam = $this->real_escape_string($queryParam);
                 $queryParam = "'$queryParam'";
                 break;
@@ -358,10 +364,10 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "\MySQLi::query()" for error handling
+     * Rapper method of "\MySQLi::query()" for error handling.
      *
-     * @param string $query      Same
-     * @param int    $resultMode Same
+     * @param string $query      Same.
+     * @param int    $resultMode Same.
      *
      * @return object \Validate\MySQLi_Result
      */
@@ -369,7 +375,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $result = $this->pr_pNativeClass->query($query, $resultMode);
         if ($result === false) { // In case of error.
-            $this->_throwQueryErrorException();
+            $this->throwQueryErrorException();
         }
         $this->_checkWarning();
         if ($result === true) {
@@ -379,7 +385,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::close()" for error handling
+     * Rapper method of "MySQLi::close()" for error handling.
      *
      * @return void
      */
@@ -393,11 +399,11 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::change_user()" for error handling
+     * Rapper method of "MySQLi::change_user()" for error handling.
      *
-     * @param string $user     Same
-     * @param string $password Same
-     * @param string $database Same
+     * @param string $user     Same.
+     * @param string $password Same.
+     * @param string $database Same.
      *
      * @return void
      */
@@ -409,23 +415,23 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::real_connect()" for error handling
+     * Rapper method of "MySQLi::real_connect()" for error handling.
      *
      * @return void
      */
     function real_connect()
     {
         call_user_func_array(array($this->pr_pNativeClass, 'real_connect'), func_get_args());
-        // Connection check
+        // Connection check.
         if ($this->pr_pNativeClass->connect_errno) {
             MySQLi::throwException('\Validate\MySQLi_Connect_Exception', $this->pr_pNativeClass->connect_error, $this->pr_pNativeClass->connect_errno);
         }
     }
 
     /**
-     * Rapper method of "MySQLi::kill()" for error handling
+     * Rapper method of "MySQLi::kill()" for error handling.
      *
-     * @param int $processid Same
+     * @param int $processid Same.
      *
      * @return void
      */
@@ -437,7 +443,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::ping()" for error handling
+     * Rapper method of "MySQLi::ping()" for error handling.
      *
      * @return void
      */
@@ -449,7 +455,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::poll()" for reference parameter
+     * Rapper method of "MySQLi::poll()" for reference parameter.
      * This method does not exist in "XAMPP 1.7.3".
      *
      * @param array &$read   Same.
@@ -466,7 +472,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::reap_async_query()" for error handling
+     * Rapper method of "MySQLi::reap_async_query()" for error handling.
      * This method does not exist in "XAMPP 1.7.3".
      *
      * @return object \Validate\MySQLi_Result
@@ -475,15 +481,15 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $pResult = $this->pr_pNativeClass->reap_async_query();
         if ($pResult === false) {
-            $this->_throwQueryErrorException();
+            $this->throwQueryErrorException();
         }
         return new MySQLi_Result($pResult, $this);
     }
 
     /**
-     * Rapper method of "MySQLi::prepare()" for error handling
+     * Rapper method of "MySQLi::prepare()" for error handling.
      *
-     * @param string $query Same
+     * @param string $query Same.
      *
      * @return object \Validate\MySQLi_STMT
      */
@@ -495,9 +501,9 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::select_db()" for error handling
+     * Rapper method of "MySQLi::select_db()" for error handling.
      *
-     * @param string $database Same
+     * @param string $database Same.
      *
      * @return void
      */
@@ -509,7 +515,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::stmt_init()" for error handling
+     * Rapper method of "MySQLi::stmt_init()" for error handling.
      *
      * @return object \Validate\MySQLi_STMT
      */
@@ -519,7 +525,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Rapper method of "MySQLi::store_result()" for error handling
+     * Rapper method of "MySQLi::store_result()" for error handling.
      *
      * @return object \Validate\MySQLi_Result
      */
@@ -530,13 +536,13 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         }
         $result = $this->pr_pNativeClass->store_result();
         if ($result === false) {
-            $this->_throwQueryErrorException();
+            $this->throwQueryErrorException();
         }
         return new MySQLi_Result($result, $this);
     }
 
     /**
-     * Rapper method of "MySQLi::use_result()" for error handling
+     * Rapper method of "MySQLi::use_result()" for error handling.
      *
      * @return object \Validate\MySQLi_Result
      */
@@ -547,7 +553,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         }
         $result = $this->pr_pNativeClass->use_result();
         if ($result === false) {
-            $this->_throwQueryErrorException();
+            $this->throwQueryErrorException();
         }
         return new MySQLi_Result($result, $this);
     }
