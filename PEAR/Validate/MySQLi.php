@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This package can make error handling and verification of MySQLi without writing a code by including.
+ * This file can make error handling of MySQLi without writing a code by including.
  *
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
  *       Method name "<class name>::<method name>" is not in camel caps format
@@ -16,7 +16,7 @@
  * Procedure 3: Please, edit *_MySetting*.php for customize.
  *      Then, it fixes part setting about all debugging modes.
  * Procedure 4: Please, copy following in your project php file.
- *      "require_once './BreakpointDebugging_MySetting.php';"
+ *      "require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';"
  * Procedure 5: Please, rewrite following in your project php file.
  *      from "new \MySQLi" to "new \Validate\MySQLi"
  * Procedure 6: Please, change signature because this is a variable length reference parameter.
@@ -107,7 +107,7 @@ use \BreakpointDebugging as B;
 global $_BreakpointDebugging_EXE_MODE;
 
 require_once __DIR__ . '/../BreakpointDebugging/OverrideClass.php';
-require_once './Validate_MySQLi_MySetting.php';
+require_once './PEAR_Setting/Validate_MySQLi_MySetting.php';
 
 /**
  * This class is own package exception.

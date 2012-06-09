@@ -3,7 +3,9 @@
 /**
  * This file can make verification of MySQLi_STMT without writing a code by including.
  *
- * This file is code except for release, therefore it does not read in case of release, and it does speed up.
+ * "*_Option.php" file does not use on release. Therefore, response time is zero on release.
+ * These file names put "_" to become error when we do autoload.
+ *
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
  *       Method name "<class name>::<method name>" is not in camel caps format
  *

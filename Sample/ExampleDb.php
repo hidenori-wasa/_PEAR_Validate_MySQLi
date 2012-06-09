@@ -4,7 +4,7 @@
 
 namespace Your_Name;
 
-require_once './BreakpointDebugging_MySetting.php';
+require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
 
 // Create MySQL class object.
 $pMySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass');
