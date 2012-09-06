@@ -15,7 +15,7 @@ if ($testNumber === 1) {
         $inputPercentage = '＋5０';
         // $inputCustomerName = 'β OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
         $inputCustomerName = 'β';
-        $result = $pMySqlI->safeQuery('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) AND ( CustomerName = ?)', 'is', $inputPercentage, $inputCustomerName);
+        $result = $pMySqlI->safeQuery('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) OR ( CustomerName = ?)', 'is', $inputPercentage, $inputCustomerName);
     } catch (\Validate\MySQLi_Query_Exception $exception) {
         echo 'Input value is mistake.';
         throw $exception;
@@ -26,16 +26,14 @@ if ($testNumber === 1) {
     $result->close();
 } else if ($testNumber === 2) {
     // Creates prepared statement ( the SQL sentence which was prepared for the parameter embedding ).
-    $pMySqlIStatement = $pMySqlI->prepare('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) AND ( CustomerName = ?)');
+    $pMySqlIStatement = $pMySqlI->prepare('SELECT Percentage, CustomerName FROM country_language WHERE Percentage >= ?');
     // User input value ( DOS attack ). This quoted from MySQL manual.
-
     // $inputPercentage = '＋5０ OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
     $inputPercentage = '＋5０';
-    // $inputCustomerName = 'β OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
-    $inputCustomerName = 'β';
     // Bind up a parameter to prepared statement marker ('?').
-    // $pMySqlIStatement->bind_param(array('is', &$inputPercentage, &$inputCustomerName));
-    $pMySqlIStatement->safeBindParam(array('is', &$inputPercentage, &$inputCustomerName));
+    // $pMySqlIStatement->bind_param(array('i', &$inputPercentage));
+    $pMySqlIStatement->safeBindParam(array ('i', &$inputPercentage));
+    // $pMySqlIStatement->bind_param(array('i', &$inputPercentage));
     // Execute query.
     $pMySqlIStatement->execute();
     // Construct columns-attribute-results-set by prepared statement.
@@ -51,7 +49,7 @@ if ($testNumber === 1) {
     // Store result to a buffer.
     $pMySqlIStatement->store_result();
     // Bind up the result columns to variables.
-    $pMySqlIStatement->bind_result(array(&$resultPercentage, &$resultCustomerName));
+    $pMySqlIStatement->bind_result(array (&$resultPercentage, &$resultCustomerName));
     echo 'mysqli_stmt::fetch()';
     while (true) {
         // Acquires result per row.
@@ -73,4 +71,5 @@ if ($testNumber === 1) {
 // Close database connection.
 $pMySqlI->close();
 echo 'END';
+
 ?>

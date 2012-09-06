@@ -64,4 +64,5 @@ B::iniCheck('mysqli.max_links', '-1', 'This is different from the default. This 
 // "mysqli.default_user" follows it because it is server setting.
 B::iniSet('mysqli.default_pw', ''); // This doesn't use because "mysqli.default_pw" is stolen.
 B::iniCheck('mysqli.reconnect', '', 'This is different from the default. This is recommended to set "mysqli.reconnect = Off" inside of "php.ini" file.');
+
 ?>

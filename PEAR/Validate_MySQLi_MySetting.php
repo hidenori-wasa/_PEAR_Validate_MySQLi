@@ -49,19 +49,19 @@
 // therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
-//require_once 'BreakpointDebugging.php'; // 'BreakpointDebugging.php' must require_once because it is base of all class, and it sets php.ini, and it sets autoload.
 require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
 ////////////////////////////////////////////////////////////////////////////////
 // User place folder (Default is empty.)
-
-
-
-
-
-
-
+//
+//
+//
+//
+//
+//
+//
 ////////////////////////////////////////////////////////////////////////////////
 if (!($_BreakpointDebugging_EXE_MODE & B::RELEASE)) { // In case of not release.
     include_once './PEAR_Setting/Validate_MySQLi_MySetting_Option.php';
 }
+
 ?>

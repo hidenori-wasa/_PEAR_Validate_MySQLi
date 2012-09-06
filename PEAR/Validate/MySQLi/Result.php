@@ -63,7 +63,6 @@ require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
  */
 class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
 {
-
     /**
      * @var string Native class name ( This fixes the variable name ). This is using a delay lexical binding for purpose that class objects becomes separate names in basic class.
      */
@@ -145,7 +144,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     function data_seek($offset)
     {
         if (!$this->pr_pNativeClass->data_seek($offset)) {
-            $this->_pr_pMySqlI->throwErrorException();
+            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
         }
     }
 
@@ -160,7 +159,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $return = $this->pr_pNativeClass->fetch_field_direct($fieldNumber);
         if (!$return) {
-            $this->_pr_pMySqlI->throwErrorException();
+            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
         }
         return $return;
     }
@@ -174,7 +173,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $return = $this->pr_pNativeClass->fetch_fields();
         if (!$return) {
-            $this->_pr_pMySqlI->throwErrorException();
+            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
         }
         return $return;
     }
@@ -189,7 +188,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     function field_seek($fieldNumber)
     {
         if (!$this->pr_pNativeClass->field_seek($fieldNumber)) {
-            $this->_pr_pMySqlI->throwErrorException();
+            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
         }
     }
 
@@ -216,4 +215,5 @@ if ($_BreakpointDebugging_EXE_MODE & \BreakpointDebugging::RELEASE) { // In case
 } else { // In case of not release.
     include_once __DIR__ . '/Result_Option.php';
 }
+
 ?>
