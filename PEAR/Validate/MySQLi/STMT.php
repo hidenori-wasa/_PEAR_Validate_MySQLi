@@ -108,6 +108,16 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
         }
     }
 
+    function _throwError()
+    {
+        throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+    }
+
+    function _throwQueryError()
+    {
+        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+    }
+
     /**
      * If there is a "MySQLi_STMT" query warning, it throw "MySQLi_Query_Warning_Exception".
      *
@@ -157,14 +167,14 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
                     $queryParam = mb_convert_kana($queryParam, 'a');
                     // Verifies integer.
                     if (preg_match('`^[+-]?[0-9]+$`xX', $queryParam) === 0) {
-                        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+                        $this->_throwQueryError();
                     }
                     break;
                 case 'd': // Double type.
                     $queryParam = mb_convert_kana($queryParam, 'a');
                     // Verifies float.
                     if (preg_match('`^[+-]?[.0-9]*[0-9]$`xX', $queryParam) === 0) {
-                        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+                        $this->_throwQueryError();
                     }
                     break;
                 case 's': // String type.
@@ -198,7 +208,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     function execute()
     {
         if (!$this->pr_pNativeClass->execute()) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
         $this->_checkWarning();
     }
@@ -225,7 +235,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $row = $this->pr_pNativeClass->fetch();
         if ($row === false) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
         return $row;
     }
@@ -250,7 +260,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     function store_result()
     {
         if (!$this->pr_pNativeClass->store_result()) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -274,10 +284,10 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
             $result->close();
         }
         if (strlen($sendData) > $maxAllowedPacket) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
         if (!$this->pr_pNativeClass->send_long_data($paramNumber, $sendData)) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -304,7 +314,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     function reset()
     {
         if (!$this->pr_pNativeClass->reset()) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 

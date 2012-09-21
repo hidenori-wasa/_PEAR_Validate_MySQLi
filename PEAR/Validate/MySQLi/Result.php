@@ -102,6 +102,11 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
         }
     }
 
+    function _throwError()
+    {
+        throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+    }
+
     /**
      * Rapper method of "MySQLi_Result::close()" for error handling.
      *
@@ -144,7 +149,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     function data_seek($offset)
     {
         if (!$this->pr_pNativeClass->data_seek($offset)) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -159,7 +164,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $return = $this->pr_pNativeClass->fetch_field_direct($fieldNumber);
         if (!$return) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+            $this->_throwError();
         }
         return $return;
     }
@@ -173,7 +178,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $return = $this->pr_pNativeClass->fetch_fields();
         if (!$return) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+            $this->_throwError();
         }
         return $return;
     }
@@ -188,7 +193,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
     function field_seek($fieldNumber)
     {
         if (!$this->pr_pNativeClass->field_seek($fieldNumber)) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 

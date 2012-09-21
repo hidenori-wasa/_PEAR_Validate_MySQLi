@@ -276,6 +276,16 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         }
     }
 
+    private function _throwQueryError()
+    {
+        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+    }
+
+    private function _throwError()
+    {
+        throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+    }
+
     /**
      * Safe "\Validate\MySQLi::query()"
      *
@@ -297,14 +307,14 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
                     $queryParam = mb_convert_kana($queryParam, 'a');
                     // Verifies integer.
                     if (preg_match('`^[+-]?[0-9]+$`xX', $queryParam) === 0) {
-                        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+                        $this->_throwQueryError();
                     }
                     break;
                 case 'd': // Double type.
                     $queryParam = mb_convert_kana($queryParam, 'a');
                     // Verifies float.
                     if (preg_match('`^[+-]?[.0-9]*[0-9]$`xX', $queryParam) === 0) {
-                        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+                        $this->_throwQueryError();
                     }
                     break;
                 case 's': // String type.
@@ -332,7 +342,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $result = $this->pr_pNativeClass->query($query, $resultMode);
         if ($result === false) { // In case of error.
-            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwQueryError();
         }
         $this->_checkWarning();
         if ($result === true) {
@@ -349,7 +359,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     function close()
     {
         if (!$this->pr_pNativeClass->close()) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
         // This enables a close flag.
         $this->pr_isClose = true;
@@ -367,7 +377,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     function change_user($user, $password, $database)
     {
         if (!$this->pr_pNativeClass->change_user($user, $password, $database)) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -395,7 +405,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     function kill($processid)
     {
         if (!$this->pr_pNativeClass->kill($processid)) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -407,7 +417,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     function ping()
     {
         if (!$this->pr_pNativeClass->ping()) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -438,7 +448,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         $pResult = $this->pr_pNativeClass->reap_async_query();
         if ($pResult === false) {
-            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwQueryError();
         }
         return new MySQLi_Result($pResult, $this);
     }
@@ -467,7 +477,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     function select_db($database)
     {
         if (!$this->pr_pNativeClass->select_db($database)) {
-            throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwError();
         }
     }
 
@@ -493,7 +503,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         }
         $result = $this->pr_pNativeClass->store_result();
         if ($result === false) {
-            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwQueryError();
         }
         return new MySQLi_Result($result, $this);
     }
@@ -510,7 +520,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
         }
         $result = $this->pr_pNativeClass->use_result();
         if ($result === false) {
-            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            $this->_throwQueryError();
         }
         return new MySQLi_Result($result, $this);
     }
