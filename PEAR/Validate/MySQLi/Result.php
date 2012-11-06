@@ -102,7 +102,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
         }
     }
 
-    function _throwError()
+    private function _throwError()
     {
         throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
     }
@@ -199,7 +199,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
 
 }
 
-if ($_BreakpointDebugging_EXE_MODE & \BreakpointDebugging::RELEASE) { // In case of release.
+if ($_BreakpointDebugging_EXE_MODE === \BreakpointDebugging::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
      * This class detail is 'Result_Option.php' file.

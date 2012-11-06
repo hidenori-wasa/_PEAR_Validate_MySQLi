@@ -43,10 +43,6 @@
  * @version  SVN: $Id$
  * @link     http://pear.php.net/package/BreakpointDebugging
  */
-// File to have "use" keyword does not inherit scope into a file including itself,
-// also it does not inherit scope into a file including,
-// and moreover "use" keyword alias has priority over class definition,
-// therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
 require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
@@ -60,7 +56,7 @@ require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-if (!($_BreakpointDebugging_EXE_MODE & B::RELEASE)) { // In case of not release.
+if ($_BreakpointDebugging_EXE_MODE !== B::RELEASE) { // In case of not release.
     include_once './PEAR_Setting/Validate_MySQLi_MySetting_Option.php';
 }
 

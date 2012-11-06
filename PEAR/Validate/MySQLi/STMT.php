@@ -47,10 +47,6 @@
 
 namespace Validate;
 
-// File to have "use" keyword does not inherit scope into a file including itself,
-// also it does not inherit scope into a file including,
-// and moreover "use" keyword alias has priority over class definition,
-// therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
 global $_BreakpointDebugging_EXE_MODE;
@@ -108,12 +104,12 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
         }
     }
 
-    function _throwError()
+    private function _throwError()
     {
         throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
     }
 
-    function _throwQueryError()
+    private function _throwQueryError()
     {
         throw new MySQLi_Query_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
     }
@@ -320,7 +316,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
 
 }
 
-if ($_BreakpointDebugging_EXE_MODE & B::RELEASE) { // In case of release.
+if ($_BreakpointDebugging_EXE_MODE === B::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
      * This class detail is 'STMT_Option.php' file.

@@ -98,10 +98,6 @@
 
 namespace Validate;
 
-// File to have "use" keyword does not inherit scope into a file including itself,
-// also it does not inherit scope into a file including,
-// and moreover "use" keyword alias has priority over class definition,
-// therefore "use" keyword alias does not be affected by other files.
 use \BreakpointDebugging as B;
 
 global $_BreakpointDebugging_EXE_MODE;
@@ -527,7 +523,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 
 }
 
-if ($_BreakpointDebugging_EXE_MODE & B::RELEASE) { // In case of release.
+if ($_BreakpointDebugging_EXE_MODE === B::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
      * This class detail is 'MySQLi_Option.php' file.
