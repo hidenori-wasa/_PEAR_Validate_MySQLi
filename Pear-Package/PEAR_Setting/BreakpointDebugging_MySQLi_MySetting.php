@@ -3,7 +3,7 @@
 /**
  * This is file for various setting.
  *
- * As for procedure, please, refer to the file level document block of Validate/MySQLi.php.
+ * As for procedure, please, refer to the file level document block of BreakpointDebugging/MySQLi.php.
  *
  * PHP version 5.3
  *
@@ -38,14 +38,14 @@
  *
  * @category PHP
  * @package  BreakpointDebugging
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
  * @link     http://pear.php.net/package/BreakpointDebugging
  */
 use \BreakpointDebugging as B;
 
-require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
+require_once BREAKPOINTDEBUGGING_PEAR_SETTING_DIR_NAME . 'BreakpointDebugging_MySetting.php';
 ////////////////////////////////////////////////////////////////////////////////
 // User place folder (Default is empty.)
 //
@@ -56,8 +56,8 @@ require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-if ($_BreakpointDebugging_EXE_MODE !== B::RELEASE) { // In case of not release.
-    include_once './PEAR_Setting/Validate_MySQLi_MySetting_Option.php';
+if (!(B::getStatic('$exeMode') & B::RELEASE)) { // In case of not release.
+    include_once BREAKPOINTDEBUGGING_PEAR_SETTING_DIR_NAME . 'BreakpointDebugging_MySQLi_MySetting_InDebug.php';
 }
 
 ?>

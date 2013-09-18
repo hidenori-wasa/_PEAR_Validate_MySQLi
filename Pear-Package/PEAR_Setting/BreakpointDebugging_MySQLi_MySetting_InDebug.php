@@ -3,8 +3,8 @@
 /**
  * This is file for various setting except for release.
  *
- * As for procedure, please, refer to the file level document block of Validate/MySQLi.php.
- * "*_Option.php" file does not use on release. Therefore, response time is zero on release.
+ * As for procedure, please, refer to the file level document block of BreakpointDebugging/MySQLi.php.
+ * "*_InDebug.php" file does not use on release. Therefore, response time is zero on release.
  * These file names put "_" to become error when we do autoload.
  *
  * PHP version 5.3
@@ -39,11 +39,11 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 // File to have "use" keyword does not inherit scope into a file including itself,
 // also it does not inherit scope into a file including,

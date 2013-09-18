@@ -38,30 +38,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
-namespace Validate;
-
-global $_BreakpointDebugging_EXE_MODE;
+namespace BreakpointDebugging;
 
 require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
-
 /**
  * This is wrapper class of MySQLi_Result class.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
-class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
+class MySQLi_Result_InAllCase extends \BreakpointDebugging_OverrideClass
 {
     /**
      * @var string Native class name ( This fixes the variable name ). This is using a delay lexical binding for purpose that class objects becomes separate names in basic class.
@@ -82,7 +79,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
      * Constructor for override.
      *
      * @param object $pNativeClass "\MySQLi_Result" native class.
-     * @param object $pMySqlI      "\Validate\MySQLi" class.
+     * @param object $pMySqlI      "\BreakpointDebugging\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -104,7 +101,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
 
     private function _throwError()
     {
-        throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+        throw new MySQLi_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pNativeClass->error), $this->_pr_pMySqlI->pNativeClass->errno);
     }
 
     /**
@@ -114,7 +111,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function close()
     {
-        $this->pr_pNativeClass->close();
+        $this->pNativeClass->close();
         // Enable close flag.
         $this->pr_isClose = true;
     }
@@ -148,7 +145,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function data_seek($offset)
     {
-        if (!$this->pr_pNativeClass->data_seek($offset)) {
+        if (!$this->pNativeClass->data_seek($offset)) {
             $this->_throwError();
         }
     }
@@ -162,7 +159,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function fetch_field_direct($fieldNumber)
     {
-        $return = $this->pr_pNativeClass->fetch_field_direct($fieldNumber);
+        $return = $this->pNativeClass->fetch_field_direct($fieldNumber);
         if (!$return) {
             $this->_throwError();
         }
@@ -176,7 +173,7 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function fetch_fields()
     {
-        $return = $this->pr_pNativeClass->fetch_fields();
+        $return = $this->pNativeClass->fetch_fields();
         if (!$return) {
             $this->_throwError();
         }
@@ -192,33 +189,35 @@ class MySQLi_Result_For_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function field_seek($fieldNumber)
     {
-        if (!$this->pr_pNativeClass->field_seek($fieldNumber)) {
+        if (!$this->pNativeClass->field_seek($fieldNumber)) {
             $this->_throwError();
         }
     }
 
 }
 
-if ($_BreakpointDebugging_EXE_MODE === \BreakpointDebugging::RELEASE) { // In case of release.
+use \BreakpointDebugging as B;
+
+if (B::getStatic('$exeMode') & B::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
-     * This class detail is 'Result_Option.php' file.
+     * This class detail is 'Result_InDebug.php' file.
      *
      * @category PHP
-     * @package  Validate_MySQLi
-     * @author   Hidenori Wasa <wasa_@nifty.com>
+     * @package  BreakpointDebugging_MySQLi
+     * @author   Hidenori Wasa <public@hidenori-wasa.com>
      * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
      * @version  Release: @package_version@
-     * @link     http://pear.php.net/package/Validate/MySQLi
+     * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
      */
 
-    class MySQLi_Result extends MySQLi_Result_For_InAllCase
+    class MySQLi_Result extends MySQLi_Result_InAllCase
     {
 
     }
 
 } else { // In case of not release.
-    include_once __DIR__ . '/Result_Option.php';
+    include_once __DIR__ . '/Result_InDebug.php';
 }
 
 ?>

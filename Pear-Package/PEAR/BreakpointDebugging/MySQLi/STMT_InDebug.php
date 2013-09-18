@@ -3,7 +3,7 @@
 /**
  * This file can make verification of MySQLi_STMT without writing a code by including.
  *
- * "*_Option.php" file does not use on release. Therefore, response time is zero on release.
+ * "*_InDebug.php" file does not use on release. Therefore, response time is zero on release.
  * These file names put "_" to become error when we do autoload.
  *
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
@@ -41,28 +41,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
-namespace Validate;
+namespace BreakpointDebugging;
 
 /**
  * This is wrapper class of MySQLi_STMT class for verification, and it is except release mode.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_STMT extends MySQLi_STMT_InAllCase
 {
-
     /**
      * @var bool Does a results of rows exist?
      */
@@ -77,7 +76,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
      * Rapper method of "MySQLi_STMT::__construct()" for verification.
      *
      * @param object $pNativeClass "\MySQLi_STMT" native class.
-     * @param object $pMySqlI      "\Validate\MySQLi" class.
+     * @param object $pMySqlI      "\BreakpointDebugging\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -89,7 +88,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     }
 
     /**
-     * "\Validate\MySQLi_STMT::safeBindParam()" for verification.
+     * "\BreakpointDebugging\MySQLi_STMT::safeBindParam()" for verification.
      *
      * @param array $refParams Reference parameters.
      *
@@ -137,7 +136,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
         parent::execute();
 
         // When the result-rows exists.
-        if ($this->pr_pNativeClass->field_count > 0) {
+        if ($this->pNativeClass->field_count > 0) {
             $this->_pr_isExistResultRows = true;
         }
     }
@@ -216,7 +215,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
         assert($this->_pr_isBuffering);
         $this->_pr_isBuffering = false;
 
-        $this->pr_pNativeClass->free_result();
+        $this->pNativeClass->free_result();
     }
 
     /**
@@ -231,7 +230,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     {
         assert(func_num_args() === 2);
         assert(is_int($paramNumber));
-        assert(0 <= $paramNumber && $paramNumber < $this->pr_pNativeClass->param_count);
+        assert(0 <= $paramNumber && $paramNumber < $this->pNativeClass->param_count);
         assert(is_string($sendData));
 
         parent::send_long_data($paramNumber, $sendData);
@@ -250,14 +249,14 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
         assert(func_num_args() === 1);
         assert(is_string($query));
 
-        $return = $this->pr_pNativeClass->prepare($query);
+        $return = $this->pNativeClass->prepare($query);
         assert($return);
     }
 
     /**
      * Rapper method of "MySQLi_STMT::result_metadata()" for verification.
      *
-     * @return \Validate\MySQLi_Result
+     * @return \BreakpointDebugging\MySQLi_Result
      */
     function result_metadata()
     {
@@ -291,9 +290,9 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
     function data_seek($rowNumber)
     {
         assert(func_num_args() === 1);
-        assert(0 <= $rowNumber && $rowNumber < $this->pr_pNativeClass->num_rows);
+        assert(0 <= $rowNumber && $rowNumber < $this->pNativeClass->num_rows);
 
-        $this->pr_pNativeClass->data_seek($rowNumber);
+        $this->pNativeClass->data_seek($rowNumber);
     }
 
     /**
@@ -308,7 +307,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
         assert(func_num_args() === 1);
         assert(is_int($attr));
 
-        $attrValue = $this->pr_pNativeClass->attr_get($attr);
+        $attrValue = $this->pNativeClass->attr_get($attr);
         assert($attrValue !== false);
         return $attrValue;
     }
@@ -327,7 +326,7 @@ class MySQLi_STMT extends MySQLi_STMT_InAllCase
         assert(is_int($attr));
         assert(is_int($mode));
 
-        $return = $this->pr_pNativeClass->attr_set($attr, $mode);
+        $return = $this->pNativeClass->attr_set($attr, $mode);
         assert($return);
     }
 

@@ -10,18 +10,19 @@
  * This package can do error handling and verification by using wrapper class of MySQLi, MySQLi_STMT and MySQLi_Result class.
  * Also, this package accelerates because verification code disappears on release.
  *
- * ### The execution procedure. ###
- * Procedure 1: Please, set php file format to utf8, but we should create backup of php files because multibyte strings may be destroyed.
- * Procedure 2: Please, copy *_MySetting*.php as your project php file.
- * Procedure 3: Please, edit *_MySetting*.php for customize.
+ * ### Running procedure. ###
+ * Please, run the following procedure.
+ * Procedure 1: Set php file format to utf8, but we should create backup of php files because multibyte strings may be destroyed.
+ * Procedure 2: Copy *_MySetting*.php as your project php file.
+ * Procedure 3: Edit *_MySetting*.php for customize.
  *      Then, it fixes part setting about all debugging modes.
- * Procedure 4: Please, copy following in your project php file.
- *      "require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';"
- * Procedure 5: Please, rewrite following in your project php file.
- *      from "new \MySQLi" to "new \Validate\MySQLi"
- * Procedure 6: Please, change signature because this is a variable length reference parameter.
+ * Procedure 4: Copy following in your project php file.
+ *      require_once './BreakpointDebugging_Inclusion.php';
+ * Procedure 5: Rewrite following in your project php file.
+ *      from "new \MySQLi" to "new \BreakpointDebugging\MySQLi"
+ * Procedure 6: Change signature because this is a variable length reference parameter.
  *      MySQLi_STMT::bind_param(), MySQLi_STMT::bind_result()
- * Procedure 7: Please, copy following in your project "my.ini" or "my.cnf" file.
+ * Procedure 7: Copy following in your project "my.ini" or "my.cnf" file.
  *      [mysqld]
  *      # It sets character sets of server, data base, table, column to "utf8". It sets collating sequence to the default "utf8_general_ci".
  *      character_set_server=utf8
@@ -42,20 +43,21 @@
  *      default-character-set=utf8
  *
  * ### Exception hierarchical structure ###
- * PEAR_Exception
+ *  PEAR_Exception
  *      BreakpointDebugging_Exception
- *          \Validate\MySQLi_Exception
- *              \Validate\MySQLi_Query_Exception
- *                  \Validate\MySQLi_Query_Warning_Exception
- *                  \Validate\MySQLi_Query_Error_Exception
- *              \Validate\MySQLi_Connect_Exception
- *              \Validate\MySQLi_Error_Exception
+ *          BreakpointDebugging_ErrorException
+ *              \BreakpointDebugging\MySQLi_Exception
+ *                  \BreakpointDebugging\MySQLi_Query_Exception
+ *                      \BreakpointDebugging\MySQLi_Query_Warning_Exception
+ *                      \BreakpointDebugging\MySQLi_Query_Error_Exception
+ *                  \BreakpointDebugging\MySQLi_Connect_Exception
+ *                  \BreakpointDebugging\MySQLi_Error_Exception
  *
  * ### Useful function index. ###
- * Safe "\Validate\MySQLi::query()".
- *      function \Validate\MySQLi::safeQuery($query, $queryParamType)
- * Safe "\Validate\MySQLi_STMT::bind_param()".
- *      function \Validate\MySQLi_STMT::safeBindParam($refParams)
+ * Safe "\BreakpointDebugging\MySQLi::query()".
+ *      function \BreakpointDebugging\MySQLi::safeQuery($query, $queryParamType)
+ * Safe "\BreakpointDebugging\MySQLi_STMT::bind_param()".
+ *      function \BreakpointDebugging\MySQLi_STMT::safeBindParam($refParams)
  *
  * PHP version 5.3
  *
@@ -89,31 +91,29 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
-namespace Validate;
+namespace BreakpointDebugging;
+
+require_once 'BreakpointDebugging/OverrideClass.php';
+require_once BREAKPOINTDEBUGGING_PEAR_SETTING_DIR_NAME . 'BreakpointDebugging_MySQLi_MySetting.php';
 
 use \BreakpointDebugging as B;
-
-global $_BreakpointDebugging_EXE_MODE;
-
-require_once __DIR__ . '/../BreakpointDebugging/OverrideClass.php';
-require_once './PEAR_Setting/Validate_MySQLi_MySetting.php';
 
 /**
  * This class is own package exception.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_Exception extends \BreakpointDebugging_Exception
 {
@@ -124,11 +124,11 @@ class MySQLi_Exception extends \BreakpointDebugging_Exception
  * This class is own package query exception.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_Query_Exception extends MySQLi_Exception
 {
@@ -139,11 +139,11 @@ class MySQLi_Query_Exception extends MySQLi_Exception
  * This class is own package query warning exception.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_Query_Warning_Exception extends MySQLi_Query_Exception
 {
@@ -154,11 +154,11 @@ class MySQLi_Query_Warning_Exception extends MySQLi_Query_Exception
  * This class is own package query error exception.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_Query_Error_Exception extends MySQLi_Query_Exception
 {
@@ -169,11 +169,11 @@ class MySQLi_Query_Error_Exception extends MySQLi_Query_Exception
  * This class is own package connect exception.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_Connect_Exception extends MySQLi_Exception
 {
@@ -184,11 +184,11 @@ class MySQLi_Connect_Exception extends MySQLi_Exception
  * This class is own package error exception.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_Error_Exception extends MySQLi_Exception
 {
@@ -199,11 +199,11 @@ class MySQLi_Error_Exception extends MySQLi_Exception
  * This is wrapper class of MySQLi class for error handling.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 {
@@ -225,8 +225,8 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     private function _checkWarning()
     {
         // The number of warnings which except connection of MySQLi class.
-        if ($this->pr_pNativeClass->warning_count) {
-            $pResult = $this->pr_pNativeClass->query('SHOW WARNINGS');
+        if ($this->pNativeClass->warning_count) {
+            $pResult = $this->pNativeClass->query('SHOW WARNINGS');
             if ($pResult) {
                 for ($count = $pResult->num_rows - 1; $count >= 0; $count--) {
                     $return = $pResult->data_seek($count);
@@ -274,16 +274,16 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 
     private function _throwQueryError()
     {
-        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pNativeClass->error), $this->pNativeClass->errno);
     }
 
     private function _throwError()
     {
-        throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+        throw new MySQLi_Error_Exception(B::convertMbString($this->pNativeClass->error), $this->pNativeClass->errno);
     }
 
     /**
-     * Safe "\Validate\MySQLi::query()"
+     * Safe "\BreakpointDebugging\MySQLi::query()"
      *
      * @param string $query          Same as first parameter of "\MySQLi::prepare()".
      * @param string $queryParamType Same as first parameter of "\MySQLi_STMT::bind_param".
@@ -332,11 +332,11 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      * @param string $query      Same.
      * @param int    $resultMode Same.
      *
-     * @return object \Validate\MySQLi_Result
+     * @return object \BreakpointDebugging\MySQLi_Result
      */
     function query($query, $resultMode = MYSQLI_STORE_RESULT)
     {
-        $result = $this->pr_pNativeClass->query($query, $resultMode);
+        $result = $this->pNativeClass->query($query, $resultMode);
         if ($result === false) { // In case of error.
             $this->_throwQueryError();
         }
@@ -354,7 +354,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function close()
     {
-        if (!$this->pr_pNativeClass->close()) {
+        if (!$this->pNativeClass->close()) {
             $this->_throwError();
         }
         // This enables a close flag.
@@ -372,7 +372,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function change_user($user, $password, $database)
     {
-        if (!$this->pr_pNativeClass->change_user($user, $password, $database)) {
+        if (!$this->pNativeClass->change_user($user, $password, $database)) {
             $this->_throwError();
         }
     }
@@ -384,10 +384,10 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function real_connect()
     {
-        call_user_func_array(array ($this->pr_pNativeClass, 'real_connect'), func_get_args());
+        call_user_func_array(array ($this->pNativeClass, 'real_connect'), func_get_args());
         // Connection check.
-        if ($this->pr_pNativeClass->connect_errno) {
-            throw new MySQLi_Connect_Exception(B::convertMbString($this->pr_pNativeClass->connect_error), $this->pr_pNativeClass->connect_errno);
+        if ($this->pNativeClass->connect_errno) {
+            throw new MySQLi_Connect_Exception(B::convertMbString($this->pNativeClass->connect_error), $this->pNativeClass->connect_errno);
         }
     }
 
@@ -400,7 +400,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function kill($processid)
     {
-        if (!$this->pr_pNativeClass->kill($processid)) {
+        if (!$this->pNativeClass->kill($processid)) {
             $this->_throwError();
         }
     }
@@ -412,7 +412,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function ping()
     {
-        if (!$this->pr_pNativeClass->ping()) {
+        if (!$this->pNativeClass->ping()) {
             $this->_throwError();
         }
     }
@@ -431,18 +431,18 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function poll(&$read, &$error, &$reject, $sec, $usec = 0)
     {
-        return $this->pr_pNativeClass->poll($read, $error, $reject, $sec, $usec);
+        return $this->pNativeClass->poll($read, $error, $reject, $sec, $usec);
     }
 
     /**
      * Rapper method of "MySQLi::reap_async_query()" for error handling.
      * This method does not exist in "XAMPP 1.7.3".
      *
-     * @return object \Validate\MySQLi_Result
+     * @return object \BreakpointDebugging\MySQLi_Result
      */
     function reap_async_query()
     {
-        $pResult = $this->pr_pNativeClass->reap_async_query();
+        $pResult = $this->pNativeClass->reap_async_query();
         if ($pResult === false) {
             $this->_throwQueryError();
         }
@@ -454,11 +454,11 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      *
      * @param string $query Same.
      *
-     * @return object \Validate\MySQLi_STMT
+     * @return object \BreakpointDebugging\MySQLi_STMT
      */
     function prepare($query)
     {
-        $pStmt = $this->pr_pNativeClass->prepare($query);
+        $pStmt = $this->pNativeClass->prepare($query);
         assert($pStmt !== false);
         return new MySQLi_STMT($pStmt, $this);
     }
@@ -472,7 +472,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function select_db($database)
     {
-        if (!$this->pr_pNativeClass->select_db($database)) {
+        if (!$this->pNativeClass->select_db($database)) {
             $this->_throwError();
         }
     }
@@ -480,24 +480,24 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     /**
      * Rapper method of "MySQLi::stmt_init()" for error handling.
      *
-     * @return object \Validate\MySQLi_STMT
+     * @return object \BreakpointDebugging\MySQLi_STMT
      */
     function stmt_init()
     {
-        return new MySQLi_STMT($this->pr_pNativeClass->stmt_init(), $this);
+        return new MySQLi_STMT($this->pNativeClass->stmt_init(), $this);
     }
 
     /**
      * Rapper method of "MySQLi::store_result()" for error handling.
      *
-     * @return object \Validate\MySQLi_Result
+     * @return object \BreakpointDebugging\MySQLi_Result
      */
     function store_result()
     {
-        if (!$this->pr_pNativeClass->field_count) {
+        if (!$this->pNativeClass->field_count) {
             return false;
         }
-        $result = $this->pr_pNativeClass->store_result();
+        $result = $this->pNativeClass->store_result();
         if ($result === false) {
             $this->_throwQueryError();
         }
@@ -507,14 +507,14 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
     /**
      * Rapper method of "MySQLi::use_result()" for error handling.
      *
-     * @return object \Validate\MySQLi_Result
+     * @return object \BreakpointDebugging\MySQLi_Result
      */
     function use_result()
     {
-        if (!$this->pr_pNativeClass->field_count) {
+        if (!$this->pNativeClass->field_count) {
             return false;
         }
-        $result = $this->pr_pNativeClass->use_result();
+        $result = $this->pNativeClass->use_result();
         if ($result === false) {
             $this->_throwQueryError();
         }
@@ -523,17 +523,17 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 
 }
 
-if ($_BreakpointDebugging_EXE_MODE === B::RELEASE) { // In case of release.
+if (B::getStatic('$exeMode') & B::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
-     * This class detail is 'MySQLi_Option.php' file.
+     * This class detail is 'MySQLi_InDebug.php' file.
      *
      * @category PHP
-     * @package  Validate_MySQLi
-     * @author   Hidenori Wasa <wasa_@nifty.com>
+     * @package  BreakpointDebugging_MySQLi
+     * @author   Hidenori Wasa <public@hidenori-wasa.com>
      * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
      * @version  Release: @package_version@
-     * @link     http://pear.php.net/package/Validate/MySQLi
+     * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
      */
 
     class MySQLi extends MySQLi_InAllCase
@@ -542,7 +542,7 @@ if ($_BreakpointDebugging_EXE_MODE === B::RELEASE) { // In case of release.
     }
 
 } else { // In case of not release.
-    include_once __DIR__ . '/MySQLi_Option.php';
+    include_once __DIR__ . '/MySQLi_InDebug.php';
 }
 
 ?>

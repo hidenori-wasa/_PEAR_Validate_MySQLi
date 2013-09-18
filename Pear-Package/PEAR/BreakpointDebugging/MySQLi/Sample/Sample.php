@@ -2,21 +2,28 @@
 
 namespace Your_Name;
 
-require_once './ExampleDb.php';
+use \BreakpointDebugging as B;
+
+$projectDirPath = str_repeat('../', preg_match_all('`/`xX', $_SERVER['PHP_SELF'], $matches) - 2);
+chdir(__DIR__ . '/' . $projectDirPath);
+require_once './BreakpointDebugging_Inclusion.php';
+require_once __DIR__ . '/ExampleDb.php';
+
+B::checkExeMode(); // Checks the execution mode.
 
 $testNumber = 1;
 
 // Connect database.
-$pMySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass', 'example_db');
+$pMySqlI = new B\MySQLi('localhost', 'root', 'wasapass', 'example_db');
 if ($testNumber === 1) {
     // Execute safe query, then display results.
     try {
         // $inputPercentage = '＋5０ OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
         $inputPercentage = '＋5０';
-        // $inputCustomerName = 'β OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
-        $inputCustomerName = 'β';
+        $inputCustomerName = 'β OR 1=1'; // User input value ( DOS attack ). This quoted from MySQL manual.
+        // $inputCustomerName = 'β';
         $result = $pMySqlI->safeQuery('SELECT Percentage, CustomerName FROM country_language WHERE ( Percentage >= ?) OR ( CustomerName = ?)', 'is', $inputPercentage, $inputCustomerName);
-    } catch (\Validate\MySQLi_Query_Exception $exception) {
+    } catch (B\MySQLi_Query_Exception $exception) {
         echo 'Input value is mistake.';
         throw $exception;
     }

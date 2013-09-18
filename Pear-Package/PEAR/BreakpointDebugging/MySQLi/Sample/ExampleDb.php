@@ -4,10 +4,8 @@
 
 namespace Your_Name;
 
-require_once './PEAR_Setting/BreakpointDebugging_MySetting.php';
-
 // Create MySQL class object.
-$pMySqlI = new \Validate\MySQLi('localhost', 'root', 'wasapass');
+$pMySqlI = new \BreakpointDebugging\MySQLi('localhost', 'root', 'wasapass');
 // Create database.
 $pMySqlI->query('CREATE DATABASE IF NOT EXISTS `example_db`');
 // Create another database.

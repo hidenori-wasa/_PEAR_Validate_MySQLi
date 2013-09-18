@@ -38,30 +38,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
-namespace Validate;
+namespace BreakpointDebugging;
 
 use \BreakpointDebugging as B;
 
-global $_BreakpointDebugging_EXE_MODE;
-
 require_once __DIR__ . '/../MySQLi.php'; // This set php.ini of MySQLi.
-
 /**
  * This is wrapper class of MySQLi_STMT class.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
 {
@@ -84,7 +81,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      * Constructor for override.
      *
      * @param object $pNativeClass "\MySQLi_STMT" native class.
-     * @param object $pMySqlI      "\Validate\MySQLi" class.
+     * @param object $pMySqlI      "\BreakpointDebugging\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -106,12 +103,12 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
 
     private function _throwError()
     {
-        throw new MySQLi_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+        throw new MySQLi_Error_Exception(B::convertMbString($this->pNativeClass->error), $this->pNativeClass->errno);
     }
 
     private function _throwQueryError()
     {
-        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pr_pNativeClass->error), $this->_pr_pMySqlI->pr_pNativeClass->errno);
+        throw new MySQLi_Query_Error_Exception(B::convertMbString($this->_pr_pMySqlI->pNativeClass->error), $this->_pr_pMySqlI->pNativeClass->errno);
     }
 
     /**
@@ -121,7 +118,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     private function _checkWarning()
     {
-        $warnings = $this->pr_pNativeClass->get_warnings();
+        $warnings = $this->pNativeClass->get_warnings();
         if ($warnings !== false) {
             $pResult = $this->_pr_pMySqlI->query('SHOW WARNINGS');
             if ($pResult) {
@@ -144,7 +141,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     }
 
     /**
-     * Safe "\Validate\MySQLi_STMT::bind_param()".
+     * Safe "\BreakpointDebugging\MySQLi_STMT::bind_param()".
      *
      * @param array $refParams Reference parameters.
      *
@@ -180,7 +177,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
                     assert(false);
             }
         }
-        return call_user_func_array(array ($this->pr_pNativeClass, 'bind_param'), $refParams);
+        return call_user_func_array(array ($this->pNativeClass, 'bind_param'), $refParams);
     }
 
     /**
@@ -193,7 +190,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function bind_param($refParams)
     {
-        return call_user_func_array(array ($this->pr_pNativeClass, 'bind_param'), $refParams);
+        return call_user_func_array(array ($this->pNativeClass, 'bind_param'), $refParams);
     }
 
     /**
@@ -203,7 +200,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function execute()
     {
-        if (!$this->pr_pNativeClass->execute()) {
+        if (!$this->pNativeClass->execute()) {
             $this->_throwError();
         }
         $this->_checkWarning();
@@ -219,7 +216,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function bind_result($refParams)
     {
-        return call_user_func_array(array ($this->pr_pNativeClass, 'bind_result'), $refParams);
+        return call_user_func_array(array ($this->pNativeClass, 'bind_result'), $refParams);
     }
 
     /**
@@ -229,7 +226,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function fetch()
     {
-        $row = $this->pr_pNativeClass->fetch();
+        $row = $this->pNativeClass->fetch();
         if ($row === false) {
             $this->_throwError();
         }
@@ -245,7 +242,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     {
         // This closed.
         $this->pr_isClose = true;
-        return $this->pr_pNativeClass->close();
+        return $this->pNativeClass->close();
     }
 
     /**
@@ -255,7 +252,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function store_result()
     {
-        if (!$this->pr_pNativeClass->store_result()) {
+        if (!$this->pNativeClass->store_result()) {
             $this->_throwError();
         }
     }
@@ -282,7 +279,7 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
         if (strlen($sendData) > $maxAllowedPacket) {
             $this->_throwError();
         }
-        if (!$this->pr_pNativeClass->send_long_data($paramNumber, $sendData)) {
+        if (!$this->pNativeClass->send_long_data($paramNumber, $sendData)) {
             $this->_throwError();
         }
     }
@@ -290,14 +287,14 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
     /**
      * Rapper method of "MySQLi_STMT::result_metadata()" for error handling.
      *
-     * @return \Validate\MySQLi_Result
+     * @return \BreakpointDebugging\MySQLi_Result
      */
     function result_metadata()
     {
         // The change pointer to "\mysqli_result" class object. (=ID). It isn't possible to return a derivation class.
-        $pMysqliResult = $this->pr_pNativeClass->result_metadata();
+        $pMysqliResult = $this->pNativeClass->result_metadata();
         if (!$pMysqliResult) {
-            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pr_pNativeClass->error), $this->pr_pNativeClass->errno);
+            throw new MySQLi_Query_Error_Exception(B::convertMbString($this->pNativeClass->error), $this->pNativeClass->errno);
         }
         return new MySQLi_Result($pMysqliResult, $this->_pr_pMySqlI);
     }
@@ -309,24 +306,24 @@ class MySQLi_STMT_InAllCase extends \BreakpointDebugging_OverrideClass
      */
     function reset()
     {
-        if (!$this->pr_pNativeClass->reset()) {
+        if (!$this->pNativeClass->reset()) {
             $this->_throwError();
         }
     }
 
 }
 
-if ($_BreakpointDebugging_EXE_MODE === B::RELEASE) { // In case of release.
+if (B::getStatic('$exeMode') & B::RELEASE) { // In case of release.
     /**
      * This is empty class for release mode.
-     * This class detail is 'STMT_Option.php' file.
+     * This class detail is 'STMT_InDebug.php' file.
      *
      * @category PHP
-     * @package  Validate_MySQLi
-     * @author   Hidenori Wasa <wasa_@nifty.com>
+     * @package  BreakpointDebugging_MySQLi
+     * @author   Hidenori Wasa <public@hidenori-wasa.com>
      * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
      * @version  Release: @package_version@
-     * @link     http://pear.php.net/package/Validate/MySQLi
+     * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
      */
 
     class MySQLi_STMT extends MySQLi_STMT_InAllCase
@@ -335,7 +332,7 @@ if ($_BreakpointDebugging_EXE_MODE === B::RELEASE) { // In case of release.
     }
 
 } else { // In case of not release.
-    include_once __DIR__ . '/STMT_Option.php';
+    include_once __DIR__ . '/STMT_InDebug.php';
 }
 
 ?>

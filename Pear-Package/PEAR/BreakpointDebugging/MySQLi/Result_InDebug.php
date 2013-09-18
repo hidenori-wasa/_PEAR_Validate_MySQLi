@@ -3,7 +3,7 @@
 /**
  * This file can make verification of MySQLi_Result without writing a code by including.
  *
- * "*_Option.php" file does not use on release. Therefore, response time is zero on release.
+ * "*_InDebug.php" file does not use on release. Therefore, response time is zero on release.
  * These file names put "_" to become error when we do autoload.
  *
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
@@ -41,33 +41,32 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  SVN: $Id$
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
-namespace Validate;
+namespace BreakpointDebugging;
 
 /**
  * This is wrapper class of MySQLi_Result class for verification, and it is except release mode.
  *
  * @category PHP
- * @package  Validate_MySQLi
- * @author   Hidenori Wasa <wasa_@nifty.com>
+ * @package  BreakpointDebugging_MySQLi
+ * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Validate/MySQLi
+ * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
-class MySQLi_Result extends MySQLi_Result_For_InAllCase
+class MySQLi_Result extends MySQLi_Result_InAllCase
 {
-
     /**
      * Rapper method of "MySQLi_Result::__construct()" for verification.
      *
      * @param object $pNativeClass "\MySQLi_Result" native class.
-     * @param object $pMySqlI      "\Validate\MySQLi" class.
+     * @param object $pMySqlI      "\BreakpointDebugging\MySQLi" class.
      */
     function __construct($pNativeClass, $pMySqlI)
     {
@@ -103,7 +102,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
         assert(func_num_args() === 1);
         assert(is_int($offset));
-        assert(0 <= $offset && $offset < $this->pr_pNativeClass->num_rows);
+        assert(0 <= $offset && $offset < $this->pNativeClass->num_rows);
 
         parent::data_seek($offset);
     }
@@ -119,16 +118,16 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     function fetch_all($resulttype = MYSQLI_NUM)
     {
         switch (func_num_args()) {
-        case 1:
-            assert(is_int($resulttype));
-            assert($resulttype & MYSQLI_BOTH);
-        case 0:
-            break;
-        default:
-            assert(false);
+            case 1:
+                assert(is_int($resulttype));
+                assert($resulttype & MYSQLI_BOTH);
+            case 0:
+                break;
+            default:
+                assert(false);
         }
 
-        return $this->pr_pNativeClass->fetch_all($resulttype);
+        return $this->pNativeClass->fetch_all($resulttype);
     }
 
     /**
@@ -141,16 +140,16 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     function fetch_array($resulttype = MYSQLI_BOTH)
     {
         switch (func_num_args()) {
-        case 1:
-            assert(is_int($resulttype));
-            assert($resulttype & MYSQLI_BOTH);
-        case 0:
-            break;
-        default:
-            assert(false);
+            case 1:
+                assert(is_int($resulttype));
+                assert($resulttype & MYSQLI_BOTH);
+            case 0:
+                break;
+            default:
+                assert(false);
         }
 
-        return $this->pr_pNativeClass->fetch_array($resulttype);
+        return $this->pNativeClass->fetch_array($resulttype);
     }
 
     /**
@@ -162,7 +161,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
         assert(func_num_args() === 0);
 
-        return $this->pr_pNativeClass->fetch_assoc();
+        return $this->pNativeClass->fetch_assoc();
     }
 
     /**
@@ -174,7 +173,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
         assert(func_num_args() === 0);
 
-        return $this->pr_pNativeClass->fetch_row();
+        return $this->pNativeClass->fetch_row();
     }
 
     /**
@@ -186,7 +185,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
         assert(func_num_args() === 0);
 
-        return $this->pr_pNativeClass->fetch_field();
+        return $this->pNativeClass->fetch_field();
     }
 
     /**
@@ -200,7 +199,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
         assert(func_num_args() === 1);
         assert(is_int($fieldNumber));
-        assert(0 <= $fieldNumber && $fieldNumber < $this->pr_pNativeClass->field_count);
+        assert(0 <= $fieldNumber && $fieldNumber < $this->pNativeClass->field_count);
 
         return parent::fetch_field_direct($fieldNumber);
     }
@@ -213,7 +212,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     function fetch_fields()
     {
         assert(func_num_args() === 0);
-        assert($this->pr_pNativeClass->field_count > 0);
+        assert($this->pNativeClass->field_count > 0);
 
         return parent::fetch_fields();
     }
@@ -226,18 +225,18 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     function fetch_object()
     {
         switch (func_num_args()) {
-        case 2:
-            assert(is_array(func_get_arg(1)));
-        case 1:
-            assert(is_string(func_get_arg(0)));
-        case 0:
-            break;
-        default:
-            assert(false);
+            case 2:
+                assert(is_array(func_get_arg(1)));
+            case 1:
+                assert(is_string(func_get_arg(0)));
+            case 0:
+                break;
+            default:
+                assert(false);
         }
 
         // Call class-auto-method by parameter array.
-        return call_user_func_array(array($this->pr_pNativeClass, 'fetch_object'), func_get_args());
+        return call_user_func_array(array ($this->pNativeClass, 'fetch_object'), func_get_args());
     }
 
     /**
@@ -251,7 +250,7 @@ class MySQLi_Result extends MySQLi_Result_For_InAllCase
     {
         assert(func_num_args() === 1);
         assert(is_int($fieldNumber));
-        assert(0 <= $fieldNumber && $fieldNumber < $this->pr_pNativeClass->field_count);
+        assert(0 <= $fieldNumber && $fieldNumber < $this->pNativeClass->field_count);
 
         parent::field_seek($fieldNumber);
     }
