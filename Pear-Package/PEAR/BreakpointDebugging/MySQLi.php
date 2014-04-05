@@ -22,25 +22,6 @@
  *      from "new \MySQLi" to "new \BreakpointDebugging\MySQLi"
  * Procedure 6: Change signature because this is a variable length reference parameter.
  *      MySQLi_STMT::bind_param(), MySQLi_STMT::bind_result()
- * Procedure 7: Copy following in your project "my.ini" or "my.cnf" file.
- *      [mysqld]
- *      # It sets character sets of server, data base, table, column to "utf8". It sets collating sequence to the default "utf8_general_ci".
- *      character_set_server=utf8
- *      # It ignores character sets information which was sent from client and it uses character sets of default of server.
- *      skip-character-set-client-handshake
- *      # It writes database name, a table name, a table alias name in storage with lowercase. Therefore, it works in all OS.
- *      lower_case_table_names=1
- *      # "init_connect" is SQL statement to execute when connecting.
- *      # "SET NAMES 'utf8'" sets
- *      #       character_set_client (Character sets which client sends)
- *      #       character_set_connection (Character sets of literal character string)
- *      #       character_set_results (Character sets of query-result to return to client) to "utf8".
- *      #       And it sets collation_connection (Collating sequence of connection character sets) to the default collating sequence of "utf8"( utf8_general_ci).
- *      init_connect="SET NAMES 'utf8'"
- *      [mysqldump]
- *      default-character-set=utf8
- *      [mysql]
- *      default-character-set=utf8
  *
  * ### Exception hierarchical structure ###
  *  PEAR_Exception
@@ -59,7 +40,7 @@
  * Safe "\BreakpointDebugging\MySQLi_STMT::bind_param()".
  *      function \BreakpointDebugging\MySQLi_STMT::safeBindParam($refParams)
  *
- * PHP version 5.3
+ * PHP version 5.3.x, 5.4.x
  *
  * LICENSE OVERVIEW:
  * 1. Do not change license text.
@@ -94,7 +75,6 @@
  * @package  BreakpointDebugging_MySQLi
  * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
- * @version  SVN: $Id$
  * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
@@ -419,7 +399,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 
     /**
      * Rapper method of "MySQLi::poll()" for reference parameter.
-     * This method does not exist in "XAMPP 1.7.3".
+     * This method does not exist in "XAMPP 1.7.4".
      *
      * @param array &$read   Same.
      * @param array &$error  Same.
@@ -436,7 +416,7 @@ class MySQLi_InAllCase extends \BreakpointDebugging_OverrideClass
 
     /**
      * Rapper method of "MySQLi::reap_async_query()" for error handling.
-     * This method does not exist in "XAMPP 1.7.3".
+     * This method does not exist in "XAMPP 1.7.4".
      *
      * @return object \BreakpointDebugging\MySQLi_Result
      */

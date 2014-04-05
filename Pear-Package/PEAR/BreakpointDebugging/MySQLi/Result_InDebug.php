@@ -9,7 +9,7 @@
  * Note: I ignore error of following of "PHP_CodeSniffer" because this class is overriding.
  *       Method name "<class name>::<method name>" is not in camel caps format
  *
- * PHP version 5.3
+ * PHP version 5.3.x, 5.4.x
  *
  * LICENSE OVERVIEW:
  * 1. Do not change license text.
@@ -44,7 +44,6 @@
  * @package  BreakpointDebugging_MySQLi
  * @author   Hidenori Wasa <public@hidenori-wasa.com>
  * @license  http://www.opensource.org/licenses/bsd-license.php  BSD 2-Clause
- * @version  SVN: $Id$
  * @link     http://pear.php.net/package/BreakpointDebugging/MySQLi
  */
 
@@ -109,7 +108,7 @@ class MySQLi_Result extends MySQLi_Result_InAllCase
 
     /**
      * Rapper method of "MySQLi_Result::fetch_all()" for verification.
-     * This method does not exist in "XAMPP 1.7.3".
+     * This method does not exist in "XAMPP 1.7.4".
      *
      * @param int $resulttype Same.
      *

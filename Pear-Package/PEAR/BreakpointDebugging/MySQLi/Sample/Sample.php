@@ -11,6 +11,21 @@ require_once __DIR__ . '/ExampleDb.php';
 
 B::checkExeMode(); // Checks the execution mode.
 
+$htmlFileContent = <<<EOD
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>SAMPLE</title>
+    </head>
+    <body style="background-color: black; color: white; font-size: 25px">
+        <pre></pre>
+    </body>
+</html>
+EOD;
+B::windowVirtualOpen('BreakpointDebugging_MySQLi', $htmlFileContent);
+ob_start();
+
 $testNumber = 1;
 
 // Connect database.
@@ -78,5 +93,7 @@ if ($testNumber === 1) {
 // Close database connection.
 $pMySqlI->close();
 echo 'END';
+
+B::windowHtmlAddition('BreakpointDebugging_MySQLi', 'pre', 0, ob_get_clean());
 
 ?>

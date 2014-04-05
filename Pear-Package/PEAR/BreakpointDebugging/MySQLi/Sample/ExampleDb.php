@@ -4,8 +4,10 @@
 
 namespace Your_Name;
 
+use \BreakpointDebugging as B;
+
 // Create MySQL class object.
-$pMySqlI = new \BreakpointDebugging\MySQLi('localhost', 'root', 'wasapass');
+$pMySqlI = new B\MySQLi('localhost', 'root', 'wasapass');
 // Create database.
 $pMySqlI->query('CREATE DATABASE IF NOT EXISTS `example_db`');
 // Create another database.
@@ -14,19 +16,18 @@ $pMySqlI->query('CREATE DATABASE IF NOT EXISTS `example_db2`');
 $pMySqlI->change_user('root', 'wasapass', 'example_db');
 // Create table.
 $pMySqlI->query(
-    'CREATE TABLE IF NOT EXISTS `country_language` ( ' .
-    '`Id` INT AUTO_INCREMENT, PRIMARY KEY ( `Id` ASC), ' .
-    '`Percentage` TINYINT, ' .
-    '`CountryCode` TINYINT, ' .
-    '`CustomerName` CHAR( 6), ' .
-    '`binary_large_object` LONGBLOB) ' .
-    'ENGINE = MyISAM ' .
-    'ROW_FORMAT = FIXED ');
+    'CREATE TABLE IF NOT EXISTS `country_language` (' .
+    '  `Id` int(11) NOT NULL AUTO_INCREMENT,' .
+    '  `Percentage` tinyint(4) DEFAULT NULL,' .
+    '  `CountryCode` tinyint(4) DEFAULT NULL,' .
+    '  `CustomerName` char(6) DEFAULT NULL,' .
+    '  `binary_large_object` longblob,' .
+    '  PRIMARY KEY (`Id`)' .
+    ') ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;');
 // Create table data.
-$pMySqlI->query('INSERT `country_language` SET `Id` = 1, `Percentage` = 49, `CountryCode` = 11, `CustomerName` = \'α\', `binary_large_object` = \'A\' ON DUPLICATE KEY UPDATE `Id` = 1');
-$pMySqlI->query('INSERT `country_language` SET `Id` = 2, `Percentage` = 50, `CountryCode` = 22, `CustomerName` = \'β\', `binary_large_object` = \'AB\' ON DUPLICATE KEY UPDATE `Id` = 2');
-$pMySqlI->query('INSERT `country_language` SET `Id` = 3, `Percentage` = 51, `CountryCode` = 33, `CustomerName` = \'∞\', `binary_large_object` = \'ABC\' ON DUPLICATE KEY UPDATE `Id` = 3');
+$pMySqlI->set_charset('utf8');
+$pMySqlI->query('INSERT INTO `country_language` (`Id`, `Percentage`, `CountryCode`, `CustomerName`, `binary_large_object`) VALUES(1, 49, 11, \'α\', 0x41) ON DUPLICATE KEY UPDATE `Id` = 1;');
+$pMySqlI->query('INSERT INTO `country_language` (`Id`, `Percentage`, `CountryCode`, `CustomerName`, `binary_large_object`) VALUES(2, 50, 22, \'β\', 0x4142) ON DUPLICATE KEY UPDATE `Id` = 2;');
+$pMySqlI->query('INSERT INTO `country_language` (`Id`, `Percentage`, `CountryCode`, `CustomerName`, `binary_large_object`) VALUES(3, 51, 33, \'∞\', 0x414243) ON DUPLICATE KEY UPDATE `Id` = 3;');
 // Close database connection.
 $pMySqlI->close();
-
-?>
